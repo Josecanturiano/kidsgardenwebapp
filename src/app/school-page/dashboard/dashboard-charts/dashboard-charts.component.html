@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Dashboard</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Dashboard</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="ion-padding" size="6">
+        <p-chart type="pie" [data]="data"></p-chart>
+      </ion-col>      
+      <ion-col class="ion-padding" size="6">
+        <p-chart type="radar" [data]="data1"></p-chart>
+      </ion-col>                 
+    </ion-row> 
+    <ion-row>
+      <ion-col class="ion-padding" size="12">
+        <p-chart type="bar" [data]="data2"></p-chart>
+      </ion-col> 
+    </ion-row>
+  </ion-grid>  
+</ion-content>

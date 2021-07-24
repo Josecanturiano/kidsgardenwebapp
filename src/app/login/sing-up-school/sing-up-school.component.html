@@ -1,0 +1,147 @@
+<div class="login-page">
+  <ion-grid>
+    <ion-col>
+      <ion-card class="example-card">
+        <ion-card-header>
+          <ion-grid>
+            <ion-row>
+              <ion-title size="large">Registro de su institución</ion-title>
+            </ion-row>
+          </ion-grid>      
+        </ion-card-header>
+    
+        <ion-card-content>
+          <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+            
+            <div [style.width.%]="100">
+              <input #file type="file" formControlName="Logo_raw" hidden #fileUpload type="file" accept="image/*" (click)="fileUpload.value = null" (change)="convertFileToBase64($event.target.files)">
+              <input type="text" formControllName="Logo" hidden>
+              <ion-row class="ion-justify-content-center">
+                <img class="max-width-img" [src]="img">
+              </ion-row>
+              <ion-row class="ion-justify-content-center">
+                <ion-button (click)="fileUpload.click()">
+                  <ion-icon slot="start" name="camera-outline"></ion-icon>
+                  <mat-label> Seleccione una imagen </mat-label>                    
+                </ion-button>
+              </ion-row>
+              <div *ngIf="submitted && f.Logo.errors">
+                <ion-row class="ion-justify-content-center">
+                  <mat-error *ngIf="f.Logo.errors.required">Este campo es obligatorio</mat-error>               
+                </ion-row>
+              </div>
+            </div>
+
+            <mat-form-field color="primary" [style.width.%]="80" appearance="outline">
+              <mat-label>Usuario</mat-label>
+              <input matInput placeholder="Nombre de la institución" formControlName="NombreInstitucion">
+              <div *ngIf="submitted && f.NombreInstitucion.errors">
+                <mat-error *ngIf="f.NombreInstitucion.errors.required">Este campo es obligatorio</mat-error>               
+              </div>                 
+            </mat-form-field>
+
+            <mat-form-field color="primary" [style.width.%]="80" appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput placeholder="Nombre de la institución" formControlName="EmailInstitucion">
+              <div *ngIf="submitted && f.EmailInstitucion.errors">
+                <mat-error *ngIf="f.EmailInstitucion.errors.required">Este campo es obligatorio</mat-error>               
+              </div>                 
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" [style.width.%]="80">
+              <mat-label>Regional</mat-label>
+              <mat-select (selectionChange)="onRegionalsComboChange($event)">
+                <mat-option *ngFor="let regional of regionals" [value]="regional.Id">
+                  {{regional.Value}}
+                </mat-option>
+              </mat-select>
+              <div *ngIf="submitted && f.Distrito_ID.errors">
+                <mat-error *ngIf="f.Distrito_ID.errors.required">Este campo es obligatorio</mat-error>               
+              </div> 
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" [style.width.%]="80">
+              <mat-label>Distrito</mat-label>
+              <mat-select formControlName="Distrito_ID" [attr.disabled]="regionals.length == 0" >
+                <mat-option *ngFor="let district of districts" [value]="district.Id">
+                  {{district.Value}}
+                </mat-option>
+              </mat-select>
+              <div *ngIf="submitted && f.Distrito_ID.errors">
+                <mat-error *ngIf="f.Distrito_ID.errors.required">Este campo es obligatorio</mat-error>               
+              </div> 
+            </mat-form-field>
+
+            <mat-form-field color="primary" [style.width.%]="80" appearance="outline">
+              <mat-label>Telefono</mat-label>
+              <input matInput placeholder="Telefono" [textMask]="{mask: phoneMask}" formControlName="TelefonoInstitucion">
+              <div *ngIf="submitted && f.TelefonoInstitucion.errors">
+                <mat-error *ngIf="f.TelefonoInstitucion.errors.required">Este campo es obligatorio</mat-error>               
+              </div>                 
+            </mat-form-field>
+
+            <mat-form-field color="primary" [style.width.%]="80" appearance="outline">
+              <mat-label>Dirección</mat-label>
+              <input matInput placeholder="Dirección" formControlName="DireccionInstitucion">
+              <div *ngIf="submitted && f.DireccionInstitucion.errors">
+                <mat-error *ngIf="f.DireccionInstitucion.errors.required">Este campo es obligatorio</mat-error>               
+              </div>                 
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" [style.width.%]="80">
+              <mat-label>Licencia</mat-label>
+              <mat-select (selectionChange)="onLicencesComboChange($event)" formControlName="Licencia_ID">
+                <mat-option *ngFor="let licence of licences" [value]="licence.Id">
+                  {{licence.Value}}
+                </mat-option>
+              </mat-select>
+              <div *ngIf="submitted && f.Distrito_ID.errors">
+                <mat-error *ngIf="f.Distrito_ID.errors.required">Este campo es obligatorio</mat-error>               
+              </div> 
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" [style.width.%]="80">
+              <mat-label>Rango de licencia</mat-label>
+              <mat-select formControlName="Rango_ID">
+                <mat-option *ngFor="let range of ranges" [value]="range.Id">
+                  {{range.Value}}
+                </mat-option>
+              </mat-select>
+              <div *ngIf="submitted && f.Distrito_ID.errors">
+                <mat-error *ngIf="f.Distrito_ID.errors.required">Este campo es obligatorio</mat-error>               
+              </div> 
+            </mat-form-field>
+
+            <a
+              mat-raised-button
+              color="primary"      
+              (click)="showSuscriptionDetails()"
+              class="login-button">
+              Detalle de las suscripciones              
+            </a>
+
+            <button
+              submit
+              [disabled]="loading"
+              mat-raised-button
+              color="primary"      
+              class="login-button">
+              Siguiente
+            </button>
+
+            <a
+              submit
+              [disabled]="loading"
+              mat-raised-button
+              color="warn" 
+              [routerLink]="['/login']"
+              class="login-button">
+              Cancelar
+            </a>
+
+          </form>            
+        </ion-card-content>  
+      </ion-card>
+    </ion-col>
+    </ion-grid>
+</div>

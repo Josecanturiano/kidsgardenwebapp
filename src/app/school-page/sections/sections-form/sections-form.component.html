@@ -1,0 +1,55 @@
+<div>
+  <h1 mat-dialog-title>Agregar nueva sección</h1>
+  <div mat-dialog-content>
+      <div style="display: flex;flex-direction: column; margin:1rem auto; max-width: 600px; padding: 1rem;">
+
+        <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <mat-label>Grado</mat-label>
+            <mat-select formControlName="Grado_ID">
+              <mat-option *ngFor="let grade of grades" [value]="grade.value">
+                {{grade.viewValue}}
+              </mat-option>
+            </mat-select>
+            <!-- <div *ngIf="submitted && f.Genero_ID.errors">
+              <mat-error *ngIf="f.Genero_ID.errors.required">Este campo es obligatorio</mat-error>               
+            </div>  -->
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <mat-label>Docente</mat-label>
+              <input type="text"
+                   placeholder="Seleccione un docente"
+                   matInput
+                   formControlName="Maestro"
+                   [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText">
+                <mat-option *ngFor="let teacher of filteredOptions | async" [value]="teacher">
+                  {{ teacher.Nombre }} {{ teacher.Apellidos }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+  
+  
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <mat-label>Asistente</mat-label>
+              <input type="text"
+                   placeholder="Seleccione un asistente"
+                   matInput
+                   formControlName="Asistente"
+                   [matAutocomplete]="auto2">
+              <mat-autocomplete #auto2="matAutocomplete" [displayWith]="getOptionText">
+                <mat-option *ngFor="let teacher2 of filteredOptions2 | async" [value]="teacher2">
+                  {{ teacher2.Nombre }} {{ teacher2.Apellidos }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <div mat-dialog-actions>
+              <a mat-button (click)="cancelar()">Cancelar</a>
+              <button (click)="onSubmit()" mat-button [disabled]="!getFormIsValid()" [mat-dialog-close]="data" cdkFocusInitial>Guardar</button>
+          </div>
+
+        </form>        
+      </div>
+  </div>

@@ -1,0 +1,157 @@
+<ng-container *ngIf="formGroup">
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Detalle del estudiante</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+    <ion-header collapse="condense">
+      <ion-toolbar>
+        <ion-title size="large">Detalle del estudiante</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-grid>
+      <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+      <mat-card class="example-card" class="form">
+        <mat-card-header>
+          <ion-row class="ion-justify-content-between max-width">
+            <ion-col>
+                <mat-card-title>Informaciones generales</mat-card-title>
+            </ion-col>    
+            <ion-row>
+              <a (click)="readonly = !readonly" [disabled]="!readonly" class="margin-vertical" mat-raised-button color="warn">Modificar</a>
+              <button [disabled]="readonly" class="margin-vertical" mat-raised-button color="primary">Guardar</button>
+            </ion-row>             
+          </ion-row>              
+        </mat-card-header>
+        <mat-card-content>        
+            <div [style.width.%]="100">
+              <input #file type="file" formControlName="foto_raw" hidden #fileUpload type="file" accept="image/*" (click)="fileUpload.value = null" (change)="convertFileToBase64($event.target.files)">
+              <input type="text" formControllName="Foto" hidden>
+              <ion-row class="ion-justify-content-center">
+                <img [src]="student.Foto">
+              </ion-row>
+              <ion-row class="ion-justify-content-center">
+                <ion-button (click)="fileUpload.click()" [disabled]="readonly">
+                  <ion-icon slot="start" name="camera-outline"></ion-icon>
+                  <mat-label> Seleccione una imagen </mat-label>                    
+                </ion-button>
+              </ion-row>
+            </div>
+          
+            <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
+              <mat-label>Nombre</mat-label>
+              <input [readonly]="readonly" matInput placeholder="Nombre" formControlName="Nombre">
+              <div *ngIf="submitted && f.Nombre.errors">
+                <mat-error *ngIf="f.Nombre.errors.required">Este campo es obligatorio</mat-error>               
+              </div>  
+            </mat-form-field>             
+  
+            <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
+              <mat-label>Apellido</mat-label>
+              <input [readonly]="readonly" matInput placeholder="Apellido" formControlName="Apellidos">
+              <div *ngIf="submitted && f.Apellidos.errors">
+                <mat-error *ngIf="f.Apellidos.errors.required">Este campo es obligatorio</mat-error>               
+              </div> 
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-label>Fecha de nacimiento</mat-label>
+              <input matInput [max]="maxDateAccepted" [min]="minDateAccepted" (click)="!readonly ? picker.open() : null" [matDatepicker]="picker" formControlName="Fecha_De_Nacimiento" readonly="true">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <div *ngIf="submitted && f.Fecha_De_Nacimiento.errors">
+                <mat-error *ngIf="f.Fecha_De_Nacimiento.errors.required">Este campo es obligatorio</mat-error>               
+              </div> 
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-label>Genero</mat-label>
+              <mat-select formControlName="Genero_ID" [disabled]="readonly">
+                <mat-option *ngFor="let gender of genders" [value]="gender.value">
+                  {{gender.viewValue}}
+                </mat-option>
+              </mat-select>
+              <div *ngIf="submitted && f.Genero_ID.errors">
+                <mat-error *ngIf="f.Genero_ID.errors.required">Este campo es obligatorio</mat-error>               
+              </div> 
+            </mat-form-field>
+  
+            <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
+              <mat-label>Telefono</mat-label>
+              <input [readonly]="readonly" matInput [textMask]="{mask: phoneMask}" placeholder="Telefono" formControlName="Telefono">
+              <div *ngIf="submitted && f.Telefono.errors">
+                <mat-error *ngIf="f.Telefono.errors.required">Este campo es obligatorio</mat-error>               
+              </div> 
+            </mat-form-field>
+  
+            <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
+              <mat-label>Direccion</mat-label>
+              <input [readonly]="readonly" matInput placeholder="Direccion" formControlName="Direccion">
+              <div *ngIf="submitted && f.Direccion.errors">
+                <mat-error *ngIf="f.Direccion.errors.required">Este campo es obligatorio</mat-error>               
+              </div>
+            </mat-form-field>         
+  
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-label>Grado</mat-label>
+              <mat-select formControlName="Grado_ID" [disabled]="readonly">
+                <mat-option *ngFor="let grade of grades" [value]="grade.value">
+                  {{grade.viewValue}}
+                </mat-option>
+              </mat-select>
+              <div *ngIf="submitted && f.Grado_ID.errors">
+                <mat-error *ngIf="f.Grado_ID.errors.required">Este campo es obligatorio</mat-error>               
+              </div> 
+            </mat-form-field>
+  
+            <div>
+  
+              <!-- <mat-form-field>
+  
+                <mat-chip-list #chipList>
+                  <mat-chip
+                    *ngFor="let tutor of tutorName"
+                    [selectable]="selectable"
+                    [removable]="removable"
+                    (removed)="remove(fruit)">
+                    {{tutor}}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                  </mat-chip>
+  
+                  </mat-chip-list>
+  
+                <input matInput placeholder="Search" aria-label="State" [matAutocomplete]="auto" formControlName="IDs_tutor">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+                  <ng-container *ngIf="!isLoading">
+                    <mat-option *ngFor="let tutor of tutorNames" [value]="tutor.ID_persona">
+                      <span><b>{{tutor.Nombre}}</b> ({{tutor.Apellidos}})</span>
+                    </mat-option>
+                  </ng-container>
+                </mat-autocomplete>
+              </mat-form-field> -->
+            
+              <!-- <br />
+            
+              <ng-container *ngIf="errorMsg; else elseTemplate">
+                {{errorMsg}}
+              </ng-container>
+              <ng-template #elseTemplate>
+                <h5>Selected Value: {{searchMoviesCtrl.value}}</h5>
+              </ng-template> -->
+                
+            Tutor :<p-autoComplete [disabled]="readonly" (onSelect)="handleSelectItem($event)" formControlName="IDs_tutores" field="Nombre" [suggestions]="results" (completeMethod)="search($event)" [dropdown]="true">
+            </p-autoComplete>
+            </div>
+  
+        </mat-card-content>      
+      </mat-card>         
+    </form>
+    </ion-grid>
+  </ion-content>
+</ng-container>

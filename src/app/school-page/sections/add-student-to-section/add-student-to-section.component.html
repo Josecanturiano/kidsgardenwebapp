@@ -1,0 +1,28 @@
+<div>
+  <h1 mat-dialog-title>Agregar estudiante a una sección</h1>
+  <div mat-dialog-content>
+      <div style="display: flex;flex-direction: column; margin:1rem auto; max-width: 600px; padding: 1rem;">
+  
+        <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <mat-label>Estudiante</mat-label>
+              <input type="text"
+                   placeholder="Seleccione un estudiante"
+                   matInput
+                   formControlName="ID_Estudiante"
+                   [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText">
+                <mat-option *ngFor="let student of students | async" [value]="student">
+                  {{ student.Nombre }} {{ student.Apellidos }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <div mat-dialog-actions>
+              <a mat-button (click)="cancelar()">Cancelar</a>
+              <button (click)="onSubmit()" mat-button [disabled]="!getFormIsValid()" [mat-dialog-close]="data" cdkFocusInitial>Guardar</button>
+          </div>
+
+        </form>        
+      </div>
+  </div>

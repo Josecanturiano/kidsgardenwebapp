@@ -1,0 +1,77 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Actividades</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Actividades</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-grid>    
+    <ion-row>
+
+      <mat-card class="example-card" class="form">
+        <mat-card-header>
+          <ion-row class="ion-justify-content-between max-width">
+            <ion-col>
+                <mat-card-title>Selecciona los vegetales</mat-card-title>
+            </ion-col>    
+            <ion-row>
+              <button (click)="capture()" class="margin-vertical" mat-raised-button color="primary">Completar</button>
+            </ion-row>             
+          </ion-row>              
+        </mat-card-header>
+
+        <mat-card-content>  
+        
+            <div id="capture">
+              <div class="example-container">
+                <h2>Frutas</h2>
+              
+                <div
+                  cdkDropList
+                  #todoList="cdkDropList"
+                  [cdkDropListData]="todo"
+                  [cdkDropListConnectedTo]="[doneList]"
+                  class="example-list"
+                  (cdkDropListDropped)="drop($event)">
+                  <div class="example-box" *ngFor="let item of todo" cdkDrag>
+                    <ion-col class="ion-align-self-center">
+                      <img class="img" [src]="item.img" alt="">
+                      <label>{{item.label}}</label>
+                    </ion-col>                  
+                  </div>
+                </div>
+              </div>
+              
+              <div class="example-container">
+                <h2>Vegetales</h2>
+              
+                <div
+                  cdkDropList
+                  #doneList="cdkDropList"
+                  [cdkDropListData]="done"
+                  [cdkDropListConnectedTo]="[todoList]"
+                  class="example-list"
+                  (cdkDropListDropped)="drop($event)">
+                  <div class="example-box" *ngFor="let item of done" cdkDrag>
+                    <ion-col class="ion-align-self-center">
+                      <img class="img" [src]="item.img" alt="">
+                      <label>{{item.label}}</label>
+                    </ion-col>   
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        </mat-card-content>
+      </mat-card>
+    </ion-row>      
+  </ion-grid>
+</ion-content>

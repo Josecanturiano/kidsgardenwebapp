@@ -1,0 +1,142 @@
+<div class="login-page">
+  <ion-grid>
+    <ion-col>
+      <ion-card class="example-card">
+        <ion-card-header>
+          <ion-grid>
+            <ion-col>
+              <ion-title size="large">Registro de su usuario</ion-title>
+            </ion-col>
+          </ion-grid>      
+        </ion-card-header>
+    
+        <ion-card-content>
+          <div class="scroll">
+            <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+            
+              <div [style.width.%]="100">
+                <input #file type="file" formControlName="Foto_raw" hidden #fileUpload type="file" accept="image/*" (click)="fileUpload.value = null" (change)="convertFileToBase64($event.target.files)">
+                <input type="text" formControllName="Foto" hidden>
+                <ion-row class="ion-justify-content-center">
+                  <img class="max-width-img" [src]="img">
+                </ion-row>
+                <ion-row class="ion-justify-content-center">
+                  <ion-button (click)="fileUpload.click()">
+                    <ion-icon slot="start" name="camera-outline"></ion-icon>
+                    <mat-label> Seleccione una imagen </mat-label>                    
+                  </ion-button>
+                </ion-row>
+                <div *ngIf="submitted && f.Foto.errors">
+                  <ion-row class="ion-justify-content-center">
+                    <mat-error *ngIf="f.Foto.errors.required">Este campo es obligatorio</mat-error>               
+                  </ion-row>
+                </div>
+              </div>
+  
+              <mat-form-field color="primary" [style.width.%]="80" appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input matInput placeholder="Nombre" formControlName="Nombre">
+                <div *ngIf="submitted && f.Nombre.errors">
+                  <mat-error *ngIf="f.Nombre.errors.required">Este campo es obligatorio</mat-error>               
+                </div>                 
+              </mat-form-field>
+  
+              <mat-form-field color="primary" [style.width.%]="80" appearance="outline">
+                <mat-label>Apellidos</mat-label>
+                <input matInput placeholder="Apellidos" formControlName="Apellidos">
+                <div *ngIf="submitted && f.Apellidos.errors">
+                  <mat-error *ngIf="f.Apellidos.errors.required">Este campo es obligatorio</mat-error>               
+                </div>                 
+              </mat-form-field>
+  
+              <mat-form-field color="primary" [style.width.%]="80" appearance="outline">
+                <mat-label>Telefono</mat-label>
+                <input matInput [textMask]="{mask: phoneMask}" placeholder="Telefono" formControlName="Telefono">
+                <div *ngIf="submitted && f.Telefono.errors">
+                  <mat-error *ngIf="f.Telefono.errors.required">Este campo es obligatorio</mat-error>               
+                </div> 
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" [style.width.%]="80">
+                <mat-label>Genero</mat-label>
+                <mat-select formControlName="Genero_ID">
+                  <mat-option *ngFor="let gender of genders" [value]="gender.value">
+                    {{gender.viewValue}}
+                  </mat-option>
+                </mat-select>
+                <div *ngIf="submitted && f.Genero_ID.errors">
+                  <mat-error *ngIf="f.Genero_ID.errors.required">Este campo es obligatorio</mat-error>               
+                </div> 
+              </mat-form-field>
+  
+              <mat-form-field color="primary" [style.width.%]="80" appearance="outline">
+                <mat-label>Dirección</mat-label>
+                <input matInput placeholder="Dirección" formControlName="Direccion">
+                <div *ngIf="submitted && f.Direccion.errors">
+                  <mat-error *ngIf="f.Direccion.errors.required">Este campo es obligatorio</mat-error>               
+                </div>                 
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" [style.width.%]="80">
+                <mat-label>Fecha de nacimiento</mat-label>
+                <input matInput [max]="maxDateAccepted" [min]="minDateAccepted" (click)="picker.open()" [matDatepicker]="picker" formControlName="Fecha_De_Nacimiento" readonly="true">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <div *ngIf="submitted && f.Fecha_De_Nacimiento.errors">
+                  <mat-error *ngIf="f.Fecha_De_Nacimiento.errors.required">Este campo es obligatorio</mat-error>               
+                </div> 
+              </mat-form-field>
+  
+              <mat-form-field color="primary" [style.width.%]="80" appearance="outline">
+                <mat-label>contraseña</mat-label>
+                <input matInput placeholder="Contraseña" [type]="hide ? 'password' : 'text'" formControlName="Password">
+                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>                                
+                <div *ngIf="submitted && f.Password.errors">
+                  <mat-error *ngIf="f.Password.errors.required">Este campo es obligatorio</mat-error>
+                  <mat-error *ngIf="f.Password.errors.minlength">La cantidad minima es de 6 caracteres</mat-error>                  
+                </div>
+                <div *ngIf="g.errors && submitted">
+                  <mat-error *ngIf="g.errors.notSame">Las contraseñas deben ser iguales</mat-error>
+                </div>
+              </mat-form-field> 
+  
+              <mat-form-field color="primary" [style.width.%]="80" appearance="outline">
+                <mat-label>Confirme su contraseña</mat-label>
+                <input matInput placeholder="Contraseña" [type]="hide2 ? 'password' : 'text'" formControlName="Confirm">
+                <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>                                
+                <div *ngIf="submitted && f.Confirm.errors">
+                  <mat-error *ngIf="f.Confirm.errors.required">Este campo es obligatorio</mat-error>
+                  <mat-error *ngIf="f.Confirm.errors.minlength">La cantidad minima es de 6 caracteres</mat-error>
+                </div>
+                <div *ngIf="g.errors && submitted">
+                  <mat-error *ngIf="g.errors.notSame">Las contraseñas deben ser iguales</mat-error>
+                </div>
+              </mat-form-field>  
+  
+              <button
+                submit
+                [disabled]="loading"
+                mat-raised-button
+                color="primary"      
+                class="login-button">
+                Siguiente
+              </button>
+
+              <a
+                submit
+                [disabled]="loading"
+                mat-raised-button
+                color="warn" 
+                [routerLink]="['/login']"
+                class="login-button">
+                Cancelar
+              </a>
+  
+            </form>            
+  
+          </div>
+        </ion-card-content>  
+      </ion-card>
+    </ion-col>
+    </ion-grid>
+</div>

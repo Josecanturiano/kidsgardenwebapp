@@ -42,10 +42,15 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import {OverlayModule} from '@angular/cdk/overlay';
+import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
+import { NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+
 
 @NgModule({
   exports: [
     A11yModule,
+    // NgxMatDatetimePickerModule,
+    // NgxMatTimepickerModule,
     ClipboardModule,
     CdkStepperModule,
     CdkTableModule,
@@ -88,7 +93,7 @@ import {OverlayModule} from '@angular/cdk/overlay';
     MatTreeModule,
     OverlayModule,
     PortalModule,
-    ScrollingModule,
+    ScrollingModule  
   ]
 })
 export class MaterialModule {}

@@ -1,0 +1,10 @@
+.margin-vertical {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+@media screen and (min-width : 600px){
+    .form {
+        padding: 10px 255px;
+    }
+}

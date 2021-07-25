@@ -10,10 +10,10 @@ export class ParColorsComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
-
-  colors = ['Azul','Rojo','Verde','Morado','Naranja','Verde','Amarillo','Negro','Blanco'];
+  colors = ['Azul', 'Rojo', 'Verde', 'Morado', 'Naranja', 'Verde', 'Amarillo', 'Negro', 'Blanco'];
   tags = ['#3a86ff', '#f94144', '#43aa8b', '#8338ec', '#f3722c', '#43aa8b', '#ffd500', '#0b090a', '#ffffff'];
+
+  ngOnInit() {}
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.colors, event.previousIndex, event.currentIndex);

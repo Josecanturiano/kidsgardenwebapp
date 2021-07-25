@@ -34,14 +34,14 @@ export class TeachersListComponent implements OnInit {
 
     this.teachersService.getAllAssistants().subscribe( teachers => {
       this.loading = false;
-      this.teachers = teachers
-    } )
-    
-  }  
+      this.teachers = teachers;
+    } );
+
+  }
 
   openDialog( id ) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent,{
-      data:{
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
         message: 'Esta seguro que desea eliminar este elemento ?',
         buttonText: {
           ok: 'Si',
@@ -58,7 +58,7 @@ export class TeachersListComponent implements OnInit {
         a.click();
         a.remove();
         snack.dismiss();
-        this.personService.deleteUser( id ).subscribe( 
+        this.personService.deleteUser( id ).subscribe(
           data => {
             this.snackBar.open('Elemento eliminado', 'Aceptar', {
               duration: 3000,
@@ -68,12 +68,12 @@ export class TeachersListComponent implements OnInit {
             this.snackBar.open('ah ocurrido un error...', 'Aceptar', {
               duration: 3000,
             });
-          } 
-        )        
+          }
+        );
       }else {
         dialogRef.close();
       }
     });
   }
-  
+
 }

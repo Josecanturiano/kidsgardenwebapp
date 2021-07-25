@@ -15,12 +15,12 @@ export class TutorsFormComponent implements OnInit {
 
   formGroup: FormGroup;
   genders = environment.genders;
-  phoneMask = [/\d/,/\d/,/\d/,"-",/\d/,/\d/,/\d/,"-",/\d/,/\d/,/\d/,/\d/];
+  phoneMask = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
   date = new Date();
   minDateAccepted = new Date( this.date.getFullYear() - 80, this.date.getMonth(), this.date.getDay() );
   maxDateAccepted = new Date( this.date.getFullYear() - 18, this.date.getMonth(), this.date.getDay() );
-  
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,19 +29,19 @@ export class TutorsFormComponent implements OnInit {
     private auth: AuthService,
     private alertService: AlertService,
   ) { }
-  
+
   createForm() {
     this.formGroup = this.formBuilder.group({
-      'Nombre': [null, Validators.required],
-      'Apellidos': [null, Validators.required],
-      'Telefono': [null, Validators.required],
-      'Genero_ID': [null, Validators.required],
-      'Direccion': [null, Validators.required],
-      'Fecha_De_Nacimiento': [null, Validators.required],
+      Nombre: [null, Validators.required],
+      Apellidos: [null, Validators.required],
+      Telefono: [null, Validators.required],
+      Genero_ID: [null, Validators.required],
+      Direccion: [null, Validators.required],
+      Fecha_De_Nacimiento: [null, Validators.required],
     });
   }
 
-  get f() { return this.formGroup.controls }
+  get f() { return this.formGroup.controls; }
 
   ngOnInit() {
     this.createForm();
@@ -51,14 +51,14 @@ export class TutorsFormComponent implements OnInit {
     const person = {
       ...this.formGroup.value,
       Creador: this.auth.userId,
-    }
+    };
     this.alertService.presentLoading();
-    console.log(person)
+    console.log(person);
     this.personService.createPerson( person ).subscribe(x => {
       console.log(x);
       this.route.navigate(['school/tutors']);
       this.alertService.dismissLoading();
-    })
+    });
   }
 
 }

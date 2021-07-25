@@ -18,7 +18,7 @@ export class TutorsViewComponent implements OnInit {
   date = new Date();
   minDateAccepted = new Date( this.date.getFullYear() - 80, this.date.getMonth(), this.date.getDay() );
   maxDateAccepted = new Date( this.date.getFullYear() - 18, this.date.getMonth(), this.date.getDay() );
-  
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,31 +31,31 @@ export class TutorsViewComponent implements OnInit {
 
   ngOnInit() {
 
-    this.createForm(); 
+    this.createForm();
 
     this.alertService.presentLoading();
 
     if (this.activedRouter.snapshot.paramMap.get('id')) {
-      
+
       this.personService.getUser( this.activedRouter.snapshot.paramMap.get('id') )
-      .subscribe(x => {
+      .subscribe((x: any) => {
         console.log(x);
-        this.tutor = x['Usuario'];
-        this.formGroup.patchValue(x['Usuario']); 
+        this.tutor = x.Usuario;
+        this.formGroup.patchValue(x.Usuario);
         this.alertService.dismissLoading();
       });
 
-    }         
+    }
   }
 
   createForm() {
     this.formGroup = this.formBuilder.group({
-      'Nombre': [null, Validators.required],
-      'Apellidos': [null, Validators.required],
-      'Telefono': [null, Validators.required],
-      'Genero_ID': [null, Validators.required],
-      'Direccion': [null, Validators.required],
-      'Fecha_De_Nacimiento': [null, Validators.required],
+      Nombre: [null, Validators.required],
+      Apellidos: [null, Validators.required],
+      Telefono: [null, Validators.required],
+      Genero_ID: [null, Validators.required],
+      Direccion: [null, Validators.required],
+      Fecha_De_Nacimiento: [null, Validators.required],
     });
   }
 
@@ -63,14 +63,14 @@ export class TutorsViewComponent implements OnInit {
     const person = {
       ...this.formGroup.value,
       Creador: this.auth.userId,
-    }
+    };
     this.alertService.presentLoading();
-    console.log(person)
+    console.log(person);
     this.personService.createPerson( person ).subscribe(x => {
       console.log(x);
       this.route.navigate(['school/tutors']);
       this.alertService.dismissLoading();
-    })
+    });
   }
 
 }

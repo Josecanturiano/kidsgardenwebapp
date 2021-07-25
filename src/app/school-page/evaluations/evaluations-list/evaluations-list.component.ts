@@ -13,7 +13,7 @@ export class EvaluationsListComponent implements OnInit {
   ngOnInit() {}
 
   alert(){
-    this.alertService.success( "alert" );
+    this.alertService.success( 'alert' );
   }
 
 }

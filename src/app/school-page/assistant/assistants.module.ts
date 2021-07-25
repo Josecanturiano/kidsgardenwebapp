@@ -26,7 +26,7 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
     PrimengModule,
     TextMaskModule,
     FormsModule,
-    ReactiveFormsModule  
-  ],  
+    ReactiveFormsModule
+  ],
 })
 export class AssistantsModule { }

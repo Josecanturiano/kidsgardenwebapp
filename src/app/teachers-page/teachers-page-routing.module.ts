@@ -19,7 +19,7 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'sections',
-        pathMatch: "full"
+        pathMatch: 'full'
       }
     ]
   }

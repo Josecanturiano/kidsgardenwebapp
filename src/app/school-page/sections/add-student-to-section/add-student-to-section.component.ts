@@ -25,48 +25,48 @@ export class AddStudentToSectionComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
-    this.studentService.getStudentsAvailablesForSection(this.data['Seccion_ID']).subscribe( data => {
+    this.studentService.getStudentsAvailablesForSection(this.data.Seccion_ID).subscribe( data => {
       console.log( data );
-    } )
+    } );
 
-    this.students = this.studentService.getStudentsAvailablesForSection(this.data['Seccion_ID']);
+    this.students = this.studentService.getStudentsAvailablesForSection(this.data.Seccion_ID);
 
     this.filteredOptions = this.formGroup.get('ID_Estudiante').valueChanges.pipe(
       startWith(''),
       switchMap(val => {
-        return this._filter(val || '')
-      })   
+        return this._filter(val || '');
+      })
     );
 
   }
 
   getOptionText(option) {
     console.log(option);
-    return `${option['Nombre']} ${option['Apellidos']}`;
+    return `${option.Nombre} ${option.Apellidos}`;
   }
 
   private _filter(value: string) {
-    let data = this.students ? this.students : [];
+    const data = this.students ? this.students : [];
     return data.filter( student => {
-      let fullname = student['Nombre']+ ' '+ student['Apellidos'];
-      return fullname.toLowerCase().indexOf(value.toLowerCase()) > -1
-    })
+      const fullname = student.Nombre + ' ' + student.Apellidos;
+      return fullname.toLowerCase().indexOf(value.toLowerCase()) > -1;
+    });
   }
 
   getFormIsValid(){
-    return this.formGroup.status == "VALID";
+    return this.formGroup.status == 'VALID';
   }
 
   createForm(){
     this.formGroup = this.formBuilder.group({
-      'ID_Estudiante': [null, Validators.required],
+      ID_Estudiante: [null, Validators.required],
     });
   }
 
   onSubmit(){
-    if ( this.formGroup.status == "VALID" ){
-      this.data['ID_Estudiante'] = this.formGroup.controls['ID_Estudiante'].value['Id_Usuario'];
-    }      
+    if ( this.formGroup.status == 'VALID' ){
+      this.data.ID_Estudiante = this.formGroup.controls.ID_Estudiante.value.Id_Usuario;
+    }
   }
 
   cancelar() {

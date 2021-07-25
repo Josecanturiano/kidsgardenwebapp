@@ -22,7 +22,7 @@ export class AuthService {
         return user;
     }));
   }
-  
+
   logout() {
     localStorage.removeItem('currentUser');
   }
@@ -37,10 +37,10 @@ export class AuthService {
   }
 
   public get institutionId(){
-    return JSON.parse(localStorage.getItem('currentUser'))['UserInfo']['ID_Institucion'];
+    return JSON.parse(localStorage.getItem('currentUser')).UserInfo.ID_Institucion;
   }
 
   public get userId(){
-    return JSON.parse(localStorage.getItem('currentUser'))['UserInfo']['Usuario_ID'];
+    return JSON.parse(localStorage.getItem('currentUser')).UserInfo.Usuario_ID;
   }
 }

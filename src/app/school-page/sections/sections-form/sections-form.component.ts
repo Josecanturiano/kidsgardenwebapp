@@ -30,36 +30,36 @@ export class SectionsFormComponent implements OnInit {
       this.filteredOptions = this.formGroup.get('Maestro').valueChanges.pipe(
         startWith(''),
         switchMap(val => {
-          return this._filter(val || '')
-        })   
+          return this._filter(val || '');
+        })
       );
 
       this.filteredOptions2 = this.formGroup.get('Asistente').valueChanges.pipe(
         startWith(''),
         switchMap(val => {
-          return this._filter2(val || '')
-        })   
-      );   
+          return this._filter2(val || '');
+        })
+      );
 
     }
 
     createForm() {
       this.formGroup = this.formBuilder.group({
-        'Grado_ID': [null, Validators.required],
-        'Maestro': [null, Validators.required],
-        'Asistente': null,
+        Grado_ID: [null, Validators.required],
+        Maestro: [null, Validators.required],
+        Asistente: null,
       });
     }
 
     getFormIsValid(){
-      return this.formGroup.status == "VALID";
+      return this.formGroup.status === 'VALID';
     }
 
     getOptionText(option) {
       console.log(option);
-      return `${option['Nombre']} ${option['Apellidos']}`;
+      return `${option.Nombre} ${option.Apellidos}`;
     }
-  
+
     private _filter(value: string) {
       return this.personService.getTeachersByFullName( value ).pipe();
     }
@@ -69,11 +69,11 @@ export class SectionsFormComponent implements OnInit {
     }
 
     onSubmit(){
-      if ( this.formGroup.status == "VALID" ){
-        this.data['Grado_ID'] = this.formGroup.controls['Grado_ID'].value;
-        this.data['Maestro'] = this.formGroup.controls['Maestro'].value['Id_Usuario'];
-        this.data['Asistente'] = this.formGroup.controls['Asistente'].value['Id_Usuario'] || 0;
-      }      
+      if ( this.formGroup.status === 'VALID' ){
+        this.data.Grado_ID = this.formGroup.controls.Grado_ID.value;
+        this.data.Maestro = this.formGroup.controls.Maestro.value.Id_Usuario;
+        this.data.Asistente = this.formGroup.controls.Asistente.value.Id_Usuario || 0;
+      }
     }
 
     cancelar() {

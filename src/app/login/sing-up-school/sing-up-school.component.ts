@@ -22,7 +22,7 @@ export class SingUpSchoolComponent implements OnInit {
   districts = [];
   licences: any;
   ranges: any;
-  phoneMask = [/\d/,/\d/,/\d/,"-",/\d/,/\d/,/\d/,"-",/\d/,/\d/,/\d/,/\d/];
+  phoneMask = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   img = environment.img_school;
 
   constructor(
@@ -33,43 +33,43 @@ export class SingUpSchoolComponent implements OnInit {
     private districtsService: DistrictsService,
     public dialog: MatDialog,
     private licenceService: LicenceService
-  ) { 
+  ) {
     this.licenceService.getLicences().subscribe(x => {
       this.licences = x;
-    })
+    });
   }
 
   ngOnInit() {
     this.createForm();
-    
+
     this.districtsService.getRegionals().subscribe((x: any[]) => {
       console.log(x);
       this.regionals = x;
-    })
+    });
 
   }
 
   onLicencesComboChange( licence ){
     this.licenceService.getRanges( licence.value ).subscribe(x => {
       this.ranges = x;
-    })
+    });
   }
 
   onRegionalsComboChange( regional ){
     this.districtsService.getDistricts( regional.value ).subscribe((x: any[]) => {
       console.log(x);
       this.districts = x;
-    })
+    });
   }
 
   public convertFileToBase64( e: File[] ){
     console.log(e);
-    var file = e[0];
-    var reader = new FileReader();
+    const file = e[0];
+    const reader = new FileReader();
     reader.onloadend = () => {
-      this.f['Logo'].setValue(reader.result);
+      this.f.Logo.setValue(reader.result);
       this.img = reader.result.toString();
-    }
+    };
     reader.readAsDataURL(file);
   }
 
@@ -79,23 +79,23 @@ export class SingUpSchoolComponent implements OnInit {
 
   createForm() {
     this.formGroup = this.formBuilder.group({
-      'NombreInstitucion': [null, Validators.required],
-      'Distrito_ID': [null, Validators.required],
-      'EmailInstitucion': [null, Validators.required],
-      'TelefonoInstitucion': [null, Validators.required],
-      'DireccionInstitucion': [null, Validators.required],
-      'Rango_ID': [null, Validators.required],
-      'Licencia_ID': [null, Validators.required],
-      'Logo': [null, Validators.required],
-      'Logo_raw': [null, Validators.required],      
+      NombreInstitucion: [null, Validators.required],
+      Distrito_ID: [null, Validators.required],
+      EmailInstitucion: [null, Validators.required],
+      TelefonoInstitucion: [null, Validators.required],
+      DireccionInstitucion: [null, Validators.required],
+      Rango_ID: [null, Validators.required],
+      Licencia_ID: [null, Validators.required],
+      Logo: [null, Validators.required],
+      Logo_raw: [null, Validators.required],
     });
   }
 
-  get f() { return this.formGroup.controls }
+  get f() { return this.formGroup.controls; }
 
   onSubmit(){
     this.submitted = true;
-    console.log(this.formGroup)
+    console.log(this.formGroup);
     if (this.formGroup.valid){
       this.router.navigateByUrl('login/sign-up-user', { state: { data: {...this.formGroup.value } } } );
     }

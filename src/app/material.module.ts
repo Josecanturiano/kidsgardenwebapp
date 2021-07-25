@@ -93,7 +93,7 @@ import { NgxMatTimepickerModule } from '@angular-material-components/datetime-pi
     MatTreeModule,
     OverlayModule,
     PortalModule,
-    ScrollingModule  
+    ScrollingModule
   ]
 })
 export class MaterialModule {}

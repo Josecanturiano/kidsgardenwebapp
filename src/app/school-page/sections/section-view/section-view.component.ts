@@ -38,16 +38,16 @@ export class SectionViewComponent implements OnInit {
       { field: 'Edad', header: 'Edad' },
       { field: 'Genero', header: 'Genero' },
       { field: 'Codigo', header: 'Codigo' },
-    ];  
-    this.fillData();  
+    ];
+    this.fillData();
   }
 
   fillData(){
     this.studentService.getAllStudentsBySection( this.activedRouter.snapshot.paramMap.get('id') ).subscribe( students => {
       this.loading = false;
       console.log( students );
-      this.students = students
-    } )
+      this.students = students;
+    } );
   }
 
   openInscriptionDialog() {
@@ -58,20 +58,21 @@ export class SectionViewComponent implements OnInit {
     });
 
     dialogo1.afterClosed().subscribe(art => {
-      if (art != undefined)
+      if (art !== undefined) {
         this.enrollStudent(art);
+      }
     });
   }
 
   enrollStudent( model ){
     this.studentService.enroll( model ).subscribe( res => {
-      this.alertService.success("Alumno inscrito correctamente");
-    } )
+      this.alertService.success('Alumno inscrito correctamente');
+    } );
   }
 
   openDialog( id ) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent,{
-      data:{
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
         message: 'Esta seguro que desea eliminar este elemento ?',
         buttonText: {
           ok: 'Si',
@@ -88,7 +89,7 @@ export class SectionViewComponent implements OnInit {
         a.click();
         a.remove();
         snack.dismiss();
-        this.personService.deleteUser( id ).subscribe( 
+        this.personService.deleteUser( id ).subscribe(
           data => {
             this.snackBar.open('Elemento eliminado', 'Aceptar', {
               duration: 3000,
@@ -98,8 +99,8 @@ export class SectionViewComponent implements OnInit {
             this.snackBar.open('ah ocurrido un error...', 'Aceptar', {
               duration: 3000,
             });
-          } 
-        )        
+          }
+        );
       }else {
         dialogRef.close();
       }

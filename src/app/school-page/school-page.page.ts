@@ -13,12 +13,12 @@ export class SchoolPagePage {
     private user: AuthService,
     private route: Router
   ) { }
-  
+
   public currentUser = {
-    username: this.user.currentUser['UserInfo']['CodigoUsuario'],
-    name: this.user.currentUser['UserInfo']['Nombre'],
-    lastname: this.user.currentUser['UserInfo']['Apellidos'],
-  }
+    username: this.user.currentUser.UserInfo.CodigoUsuario,
+    name: this.user.currentUser.UserInfo.Nombre,
+    lastname: this.user.currentUser.UserInfo.Apellidos,
+  };
 
   public appPages = [
     { title: 'Inicio', url: '/school/dashboard', icon: 'home' },

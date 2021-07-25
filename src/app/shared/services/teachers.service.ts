@@ -22,5 +22,5 @@ export class TeachersService {
     console.log(`${environment.API_URL}/institucion/getAdminsByQueryAndFilters?Q=&Institucion_ID=` + this.user.institutionId);
     return this.http.get(`${environment.API_URL}/institucion/getAdminsByQueryAndFilters?Q=&Institucion_ID=` + this.user.institutionId);
   }
-  
+
 }

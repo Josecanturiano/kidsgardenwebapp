@@ -11,15 +11,15 @@ export class SectionsService {
   constructor( private http: HttpClient, private user: AuthService ) { }
 
   getSections(){
-    return this.http.get(`${environment.API_URL}/institucion/getSeccionesAll?Institucion_ID=`+ this.user.institutionId)
+    return this.http.get(`${environment.API_URL}/institucion/getSeccionesAll?Institucion_ID=` + this.user.institutionId);
   }
 
   getAvailableSections(){
-    return this.http.get(`${environment.API_URL}/institucion/getSeccionesDisponibles?Institucion_ID=`+ this.user.institutionId)
+    return this.http.get(`${environment.API_URL}/institucion/getSeccionesDisponibles?Institucion_ID=` + this.user.institutionId);
   }
 
   getStudentsSections(){
-    return this.http.get(`${environment.API_URL}/selector/SeccionesParaEstudiantes?Institucion_ID=` + this.user.institutionId)
+    return this.http.get(`${environment.API_URL}/selector/SeccionesParaEstudiantes?Institucion_ID=` + this.user.institutionId);
   }
 
   setNewTeacherForSection( teacherId, sectionId ){
@@ -28,7 +28,7 @@ export class SectionsService {
       Modificador: this.user.institutionId,
       Seccion_ID: sectionId,
     };
-    return this.http.post(`${environment.API_URL}/institucion/ReasignarMaestros`, model )
+    return this.http.post(`${environment.API_URL}/institucion/ReasignarMaestros`, model );
   }
 
   setNewAssistantForSection( assistantId, sectionId ){
@@ -37,7 +37,7 @@ export class SectionsService {
       Modificador: this.user.institutionId,
       Seccion_ID: sectionId,
     };
-    return this.http.post(`${environment.API_URL}/institucion/ReasignarAsistente`, model )
+    return this.http.post(`${environment.API_URL}/institucion/ReasignarAsistente`, model );
   }
 
   reasingStudent( studentId, sectionId ){
@@ -46,7 +46,7 @@ export class SectionsService {
       Modificador: this.user.institutionId,
       Seccion_ID: sectionId,
     };
-    return this.http.post(`${environment.API_URL}/institucion/ReasignarAsistente`, model )
+    return this.http.post(`${environment.API_URL}/institucion/ReasignarAsistente`, model );
   }
 
   promoteStudent( studentId, newSectionId ){
@@ -63,7 +63,7 @@ export class SectionsService {
       Usuario_id: userId,
       Modificador: this.user.institutionId,
     };
-    return this.http.post(`${environment.API_URL}/institucion/Suspender`, model )
+    return this.http.post(`${environment.API_URL}/institucion/Suspender`, model );
   }
 
   cancelSuspendStudent( userId ){
@@ -71,18 +71,18 @@ export class SectionsService {
       Usuario_id: userId,
       Modificador: this.user.institutionId,
     };
-    return this.http.post(`${environment.API_URL}/institucion/QuitarSuspencion`, model )
+    return this.http.post(`${environment.API_URL}/institucion/QuitarSuspencion`, model );
   }
 
   createSection( section ){
-    section['Institucion_ID'] = this.user.institutionId;
-    section['Creador'] = this.user.userId;
+    section.Institucion_ID = this.user.institutionId;
+    section.Creador = this.user.userId;
     return this.http.post(`${environment.API_URL}/institucion/CreateSeccion`, section );
   }
 
   addStudentToSection( studentId, sectionId ){
     const model = {
-      ID_Estudiante: studentId, 
+      ID_Estudiante: studentId,
       Seccion_ID: sectionId,
       Creador: this.user.userId
     };

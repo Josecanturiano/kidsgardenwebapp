@@ -19,34 +19,34 @@
       <mat-card-header>
         <ion-row class="ion-justify-content-between max-width">
           <ion-col>
-              <mat-card-title>Detalles de la evaluación</mat-card-title>
-          </ion-col>    
+            <mat-card-title>Detalles de la evaluación</mat-card-title>
+          </ion-col>
           <ion-row class="ion-padding">
             <button class="margin-vertical" mat-raised-button color="primary">Guardar</button>
-          </ion-row>             
-        </ion-row>              
+          </ion-row>
+        </ion-row>
       </mat-card-header>
-      <mat-card-content>        
-          
+      <mat-card-content>
+
         <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
- 
+
           <div>
             <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
               <mat-label>Nombre de la prueba</mat-label>
               <input matInput placeholder="Nombre de la prueba" formControlName="title">
               <div *ngIf="submitted && f.title.errors">
-                <mat-error *ngIf="f.Nombre.errors.required">Este campo es obligatorio</mat-error>               
-              </div>  
+                <mat-error *ngIf="f.Nombre.errors.required">Este campo es obligatorio</mat-error>
+              </div>
             </mat-form-field>
           </div>
-  
+
           <div>
             <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
               <mat-label>Descripción de la prueba</mat-label>
               <input matInput placeholder="Descripción de la prueba" formControlName="description">
               <div *ngIf="submitted && f.title.errors">
-                <mat-error *ngIf="f.Nombre.errors.required">Este campo es obligatorio</mat-error>               
-              </div>  
+                <mat-error *ngIf="f.Nombre.errors.required">Este campo es obligatorio</mat-error>
+              </div>
             </mat-form-field>
           </div>
 
@@ -58,119 +58,126 @@
               </mat-option>
             </mat-select>
             <div *ngIf="submitted && f.sectionId.errors">
-              <mat-error *ngIf="f.sectionId.errors.required">Este campo es obligatorio</mat-error>               
-            </div> 
+              <mat-error *ngIf="f.sectionId.errors.required">Este campo es obligatorio</mat-error>
+            </div>
           </mat-form-field>
 
-          <!-- <mat-form-field appearance="outline" [style.width.%]="100">
-            <mat-label>Seleccione la fecha de inicio y la fecha de fin</mat-label>
-            <mat-date-range-input [rangePicker]="picker">
-              <input (click)="picker.open()" readonly="true" formControlName="start_date" matStartDate placeholder="Start date">
-              <input (click)="picker.open()" readonly="true" formControlName="end_date" matEndDate placeholder="End date">
-            </mat-date-range-input>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-date-range-picker #picker></mat-date-range-picker>
-          </mat-form-field> -->
-         
-          <p-calendar styleClass="p-calendar-class" selectionMode="range" [showTime]="true" inputId="time"></p-calendar>
+          <ion-row>
+            <ion-col>
+              <label class="time-label-padding">Fecha de inicio</label>
+              <p-calendar formControlName="start_datetime" styleClass="p-calendar-class" [showTime]="true"
+                          inputId="time" #startDate
+              ></p-calendar>
+            </ion-col>
+            <ion-col>
+              <label class="time-label-padding">Fecha de fin</label>
+              <p-calendar formControlName="end_datetime" styleClass="p-calendar-class" [showTime]="true"
+                          inputId="time"
+                          [minDate]="getDateWithOneHour( startDate.value )"
+              ></p-calendar>
+            </ion-col>
+          </ion-row>
 
           <mat-card class="example-card" class="form">
             <mat-card-header>
               <ion-row class="ion-justify-content-between max-width">
                 <ion-col>
-                    <mat-card-title>Preguntas</mat-card-title>
-                </ion-col> 
+                  <mat-card-title>Preguntas</mat-card-title>
+                </ion-col>
                 <ion-row>
                   <ion-button (click)="addNewQuestion()">
                     <ion-icon slot="start" name="add-outline"></ion-icon>
-                    <mat-label>Agregar nueva pregunta</mat-label>                    
+                    <mat-label>Agregar nueva pregunta</mat-label>
                   </ion-button>
-                </ion-row>               
-              </ion-row>                         
+                </ion-row>
+              </ion-row>
             </mat-card-header>
-            <mat-card-content>        
-  
+            <mat-card-content>
+
               <div formArrayName="questions">
                 <div *ngFor="let question of questions.controls; let i=index">
                   <div [formGroupName]="i">
-                    
+
                     <div [formGroup]="question">
                       <mat-form-field appearance="outline" [style.width.%]="100">
-                          <mat-label>Pregunta numero: {{i + 1}}</mat-label>
-                          <input matInput
-                                 formControlName="question"
-                                 placeholder="Pregunta numero: {{i + 1}}">
+                        <mat-label>Pregunta numero: {{i + 1}}</mat-label>
+                        <input matInput
+                               formControlName="question"
+                               placeholder="Pregunta numero: {{i + 1}}">
                       </mat-form-field>
-  
+
                       <ion-button (click)="addAnswerForQuestion( i )">
                         <ion-icon slot="start" name="add-outline"></ion-icon>
-                        <mat-label>Agregar respuesta</mat-label>                    
-                      </ion-button>                
-  
+                        <mat-label>Agregar respuesta</mat-label>
+                      </ion-button>
+
                       <div formArrayName="answers">
                         <ion-row>
                           <div *ngFor="let answer of getAnswersForQuestion( question ); let index=index">
                             <div [formGroupName]="index">
-                                  <div [formGroup]="answer">
-                                    
-                                    <ion-col>
-                                      <div class="answer-card">
-                                        <div [style.width.%]="70">
-                                          <input #file type="file" hidden #fileUpload type="file" accept="image/*" (click)="fileUpload.value = null" (change)="convertFileToBase64($event.target.files, answer)">
-                                          <input type="text" formControllName="img" hidden>
-                                          <ion-row class="ion-justify-content-center">
-                                            <img class="answer-img" [src]="getImageForAnswer( answer )">
-                                          </ion-row>
-                                          <ion-row class="ion-justify-content-center">
-                                            <ion-button (click)="fileUpload.click()">
-                                              <ion-icon slot="start" name="camera-outline"></ion-icon>
-                                              <mat-label> Seleccione una imagen </mat-label>                    
-                                            </ion-button>
-                                          </ion-row>
-                                        </div>
-                                      
-                                        <mat-form-field appearance="outline" [style.width.%]="70">
-                                          <mat-label>Respuesta numero: {{i + 1}}</mat-label>
-                                          <input matInput
-                                                 formControlName="description"
-                                                 placeholder="Respuesta numero: {{i + 1}}">
-                                        </mat-form-field>
+                              <div [formGroup]="answer">
 
-                                        <mat-checkbox matCheckbox class="example-margin">Es una respuesta correcta ?</mat-checkbox>
+                                <ion-col>
+                                  <div class="answer-card">
+                                    <div [style.width.%]="70">
+                                      <input #file type="file" hidden #fileUpload type="file" accept="image/*"
+                                             (click)="fileUpload.value = null"
+                                             (change)="convertFileToBase64($event.target.files, answer)">
+                                      <input type="text" formControllName="img" hidden>
+                                      <ion-row class="ion-justify-content-center">
+                                        <img class="answer-img" [src]="getImageForAnswer( answer )">
+                                      </ion-row>
+                                      <ion-row class="ion-justify-content-center">
+                                        <ion-button (click)="fileUpload.click()">
+                                          <ion-icon slot="start" name="camera-outline"></ion-icon>
+                                          <mat-label> Seleccione una imagen</mat-label>
+                                        </ion-button>
+                                      </ion-row>
+                                    </div>
 
-                                      </div>
-                                    </ion-col>
+                                    <mat-form-field appearance="outline" [style.width.%]="70">
+                                      <mat-label>Respuesta numero: {{i + 1}}</mat-label>
+                                      <input matInput
+                                             formControlName="description"
+                                             placeholder="Respuesta numero: {{i + 1}}">
+                                    </mat-form-field>
+
+                                    <mat-checkbox matCheckbox class="example-margin">Es una respuesta correcta ?
+                                    </mat-checkbox>
 
                                   </div>
+                                </ion-col>
+
                               </div>
+                            </div>
                           </div>
-  
+
                         </ion-row>
                       </div>
-  
+
                     </div>
-  
+
                   </div>
 
                   <br>
                   <mat-divider class="divider-padding"></mat-divider>
                   <br>
 
-                </div>                
+                </div>
 
               </div>
-  
-            </mat-card-content>      
-          </mat-card>   
-         
+
+            </mat-card-content>
+          </mat-card>
+
           <!-- <p>
             <button type="submit">Guardar</button>
           </p> -->
-         
+
         </form>
 
-      </mat-card-content>      
-    </mat-card>            
+      </mat-card-content>
+    </mat-card>
 
   </ion-grid>
 </ion-content>

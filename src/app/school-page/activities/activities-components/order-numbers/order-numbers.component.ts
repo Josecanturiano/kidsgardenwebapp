@@ -11,9 +11,9 @@ export class OrderNumbersComponent implements OnInit {
 
   constructor( private voiceService: VoiceService ) { }
 
-  ngOnInit() {}
+  movies = ['1', '2', '3', '4', '5', '6', '7', '8', '9'].sort(function(a, b) { return 0.5 - Math.random(); });
 
-  movies = ['1','2','3','4','5','6','7','8','9'].sort(function (a, b) { return 0.5 - Math.random() })
+  ngOnInit() {}
 
   sound( message ){
     this.voiceService.speak( message );

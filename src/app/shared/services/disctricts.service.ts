@@ -15,7 +15,7 @@ export class DistrictsService {
   }
 
   getDistricts( regionalId ){
-    console.log(`${environment.API_URL}/selector/Distritos?Regional_ID=`+ regionalId );
-    return this.http.get(`${environment.API_URL}/selector/Distritos?Regional_ID=`+ regionalId );
+    console.log(`${environment.API_URL}/selector/Distritos?Regional_ID=` + regionalId );
+    return this.http.get(`${environment.API_URL}/selector/Distritos?Regional_ID=` + regionalId );
   }
 }

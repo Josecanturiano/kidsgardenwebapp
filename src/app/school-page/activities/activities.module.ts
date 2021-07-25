@@ -7,13 +7,17 @@ import { OrderNumbersComponent } from './activities-components/order-numbers/ord
 import { MaterialModule } from '../../material.module';
 import { SelectFruitsComponent } from './activities-components/select-fruits/select-fruits.component';
 import { NgxCaptureModule } from 'ngx-capture';
+import {IonicModule} from '@ionic/angular';
+import {PrimengModule} from '../../primeng.module';
 
 @NgModule({
   imports: [
     CommonModule,
     ActivitiesRoutingModule,
     MaterialModule,
-    NgxCaptureModule
+    NgxCaptureModule,
+    IonicModule,
+    PrimengModule
   ],
   declarations: [
     ActivitiesListComponent,

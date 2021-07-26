@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { OrderNumbersComponent } from './activities-components/order-numbers/order-numbers.component';
 import { SelectFruitsComponent } from './activities-components/select-fruits/select-fruits.component';
 import { ActivitiesListComponent } from './activities-list/activities-list.component';
-import { CreateActivityComponent } from './create-activity/create-activity.component';
+import {ActivitiesFormComponent} from './activities-form/activities-form.component';
 
 const routes: Routes = [
   {
@@ -20,7 +20,7 @@ const routes: Routes = [
   },
   {
     path: 'add',
-    component: CreateActivityComponent
+    component: ActivitiesFormComponent
   }
 ];
 

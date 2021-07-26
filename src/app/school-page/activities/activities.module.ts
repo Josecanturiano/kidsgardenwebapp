@@ -9,6 +9,9 @@ import { SelectFruitsComponent } from './activities-components/select-fruits/sel
 import { NgxCaptureModule } from 'ngx-capture';
 import {IonicModule} from '@ionic/angular';
 import {PrimengModule} from '../../primeng.module';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {TextMaskModule} from 'angular2-text-mask';
+import {ActivitiesFormComponent} from './activities-form/activities-form.component';
 
 @NgModule({
   imports: [
@@ -16,11 +19,18 @@ import {PrimengModule} from '../../primeng.module';
     ActivitiesRoutingModule,
     MaterialModule,
     NgxCaptureModule,
+    CommonModule,
+    FormsModule,
     IonicModule,
-    PrimengModule
+    MaterialModule,
+    PrimengModule,
+    TextMaskModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     ActivitiesListComponent,
+    ActivitiesFormComponent,
     OrderNumbersComponent,
     SelectFruitsComponent
   ],

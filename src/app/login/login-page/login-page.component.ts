@@ -76,8 +76,7 @@ export class LoginPageComponent implements OnInit {
         },
         error => {
           this.alertService.dismissLoading();
-          this.alertService.error(error);
-          console.log(error);
+          this.alertService.error( 'Usuario o contraseña incorrectos' );
         }
       );
   }

@@ -43,7 +43,7 @@
           <div>
             <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
               <mat-label>Descripción de la prueba</mat-label>
-              <input matInput placeholder="Descripción de la prueba" formControlName="description">
+              <textarea matInput placeholder="Descripción de la prueba" formControlName="description"></textarea>
               <div *ngIf="submitted && f.title.errors">
                 <mat-error *ngIf="f.Nombre.errors.required">Este campo es obligatorio</mat-error>
               </div>
@@ -64,13 +64,13 @@
 
           <ion-row>
             <ion-col>
-              <label class="time-label-padding">Fecha de inicio</label>
+              <label class="time-label-padding">Fecha de inicio : </label>
               <p-calendar formControlName="start_datetime" styleClass="p-calendar-class" [showTime]="true"
                           inputId="time" #startDate
               ></p-calendar>
             </ion-col>
             <ion-col>
-              <label class="time-label-padding">Fecha de fin</label>
+              <label class="time-label-padding">Fecha de fin : </label>
               <p-calendar formControlName="end_datetime" styleClass="p-calendar-class" [showTime]="true"
                           inputId="time"
                           [minDate]="getDateWithOneHour( startDate.value )"

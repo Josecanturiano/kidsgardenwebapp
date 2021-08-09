@@ -16,38 +16,76 @@
   <ion-grid>
     <ion-row class="ion-padding">
       <ion-button [routerLink]="['add']">Agregar Estudiante</ion-button>
-    </ion-row> 
+    </ion-row>
     <ion-row class="ion-padding">
-     
-      <p-table rowHover="true" [columns]="cols" [loading]="loading" [value]="students" [paginator]="true" [rows]="6" [showCurrentPageReport]="true" 
+
+      <p-table rowHover="true" [columns]="cols" [loading]="loading" [value]="students" [paginator]="true" [rows]="6"
+               [showCurrentPageReport]="true"
+               [globalFilterFields]="['Grado_ID']">
         [rowsPerPageOptions]="[6,15,50]">
-            <ng-template pTemplate="header" let-columns>
-                <tr>
-                    <th [pSortableColumn]="col.field" *ngFor="let col of columns; let i = index">{{col.header}}
-                      <p-sortIcon [field]="col.field"></p-sortIcon>
-                    </th>
-                    <th>
-                      Acciones                     
-                    </th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-rowData let-columns="columns">
-                <tr>
-                    <td *ngFor="let col of columns">
-                        {{rowData[col.field]}}
-                    </td>
-                    <td>
-                      <a [routerLink]="['view', rowData['Id_Usuario'] ]">
-                        <span slot="start" class="material-icons">portrait</span>                    
-                      </a>
-                      <a (click)="openDialog( rowData['Id_Usuario'] )">
-                        <span slot="start" class="material-icons cursos-point color-red">delete_outline</span>                 
-                      </a>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-      
-    </ion-row> 
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th [pSortableColumn]="col.field" *ngFor="let col of columns; let i = index">{{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+            <th>
+              Acciones
+            </th>
+          </tr>
+          <tr>
+            <th colspan="2">
+              <p-columnFilter type="text" matchMode="contains" placeholder="Nombre" field="Nombre" [showMenu]="false"></p-columnFilter>
+            </th>
+            <th colspan="2">
+              <p-columnFilter type="text" matchMode="contains" placeholder="Apellidos" field="Apellidos" [showMenu]="false"></p-columnFilter>
+            </th>
+            <th colspan="2">
+              <p-columnFilter field="Seccion_ID" matchMode="in" [showMenu]="false">
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                  <p-multiSelect [ngModel]="value" [options]="sections" placeholder="Seccion"
+                                 (onChange)="filter($event.value)" optionLabel="Nombre" optionValue="ID_Seccion">
+                    <ng-template let-option pTemplate="item">
+                      <div class="p-multiselect-representative-option">
+                        <span class="p-ml-1">{{option.Nombre}}</span>
+                      </div>
+                    </ng-template>
+                  </p-multiSelect>
+                </ng-template>
+              </p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter field="Grado_ID" matchMode="in" [showMenu]="false">
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                  <p-multiSelect [ngModel]="value" [options]="grades" placeholder="Grado"
+                                 (onChange)="filter($event.value)" optionLabel="viewValue" optionValue="value">
+                    <ng-template let-option pTemplate="item">
+                      <div class="p-multiselect-representative-option">
+                        <span class="p-ml-1">{{option.viewValue}}</span>
+                      </div>
+                    </ng-template>
+                  </p-multiSelect>
+                </ng-template>
+              </p-columnFilter>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns">
+              {{rowData[col.field]}}
+            </td>
+            <td>
+              <a [routerLink]="['view', rowData['Id_Usuario'] ]">
+                <span slot="start" class="material-icons">portrait</span>
+              </a>
+              <a (click)="openDialog( rowData['Id_Usuario'] )">
+                <span slot="start" class="material-icons cursos-point color-red">delete_outline</span>
+              </a>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+    </ion-row>
   </ion-grid>
 </ion-content>

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { AlertService } from 'src/app/shared/services/alert.service';
+import {Component, OnInit} from '@angular/core';
+import {AlertService} from 'src/app/shared/services/alert.service';
+import {ActivitiesService} from '../../../shared/services/activities.service';
 
 @Component({
   selector: 'app-evaluations-list',
@@ -9,9 +10,10 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 export class EvaluationsListComponent implements OnInit {
   cols: any;
   loading: any;
-  activities: any;
+  evaluations: any;
 
-  constructor( private alertService: AlertService ) { }
+  constructor(private alertService: AlertService, private evaluationsService: ActivitiesService) {
+  }
 
   ngOnInit() {
     this.cols = [
@@ -21,10 +23,18 @@ export class EvaluationsListComponent implements OnInit {
       {field: 'total_of_students', header: 'Total de participantes'},
       {field: 'total_of_entregas', header: 'Total de entregas'},
     ];
+
+    // this.getEvaluations();
   }
 
-  alert(){
-    this.alertService.success( 'alert' );
+  getEvaluations() {
+    this.evaluationsService.getAllEvaluations().subscribe(x => {
+      this.evaluations = x;
+    });
+  }
+
+  alert() {
+    this.alertService.success('alert');
   }
 
 }

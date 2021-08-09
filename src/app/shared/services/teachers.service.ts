@@ -19,8 +19,14 @@ export class TeachersService {
   }
 
   getAllUsers(){
-    console.log(`${environment.API_URL}/institucion/getAdminsByQueryAndFilters?Q=&Institucion_ID=` + this.user.institutionId);
     return this.http.get(`${environment.API_URL}/institucion/getAdminsByQueryAndFilters?Q=&Institucion_ID=` + this.user.institutionId);
   }
 
+  getTeacherInfo(teacherId){
+    return this.http.get( `${environment.API_URL}/institucion/getInfoDocente?id=${teacherId}&Institucion_ID=${this.user.institutionId}` )
+  }
+
+  getAsistenteById(id: string) {
+    return this.http.get( `${environment.API_URL}/institucion/getInfoAsistente?id=${id}&Institucion_ID=${this.user.institutionId}` );
+  }
 }

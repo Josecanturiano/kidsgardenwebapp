@@ -15,28 +15,28 @@
   </ion-header>
   <ion-grid>
 
+    <form [formGroup]="formGroup">
 
-    <mat-card class="example-card form">
-      <mat-card-header>
-        <ion-row class="ion-justify-content-between max-width">
-          <ion-col>
-            <mat-card-title>Detalles de la actividad</mat-card-title>
-          </ion-col>
-          <ion-row class="ion-padding">
-            <button class="margin-vertical" mat-raised-button color="primary">Guardar</button>
+      <mat-card class="example-card form">
+        <mat-card-header>
+          <ion-row class="ion-justify-content-between max-width">
+            <ion-col>
+              <mat-card-title>Detalles de la actividad</mat-card-title>
+            </ion-col>
+            <ion-row class="ion-padding">
+              <button class="margin-vertical" mat-raised-button color="primary" (click)="onSubmit()">Guardar</button>
+            </ion-row>
           </ion-row>
-        </ion-row>
-      </mat-card-header>
-      <mat-card-content>
+        </mat-card-header>
+        <mat-card-content>
 
-        <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
 
           <div>
             <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
               <mat-label>Nombre de la actividad</mat-label>
-              <input matInput placeholder="Nombre de la actividad" formControlName="title">
-              <div *ngIf="submitted && f.title.errors">
-                <mat-error *ngIf="f.Nombre.errors.required">Este campo es obligatorio</mat-error>
+              <input matInput placeholder="Nombre de la actividad" formControlName="Titulo">
+              <div *ngIf="submitted && f.Titulo.errors">
+                <mat-error *ngIf="f.Titulo.errors.required">Este campo es obligatorio</mat-error>
               </div>
             </mat-form-field>
           </div>
@@ -44,44 +44,100 @@
           <div>
             <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
               <mat-label>Descripción de la actividad</mat-label>
-              <textarea matInput placeholder="Descripción de la actividad" formControlName="description"></textarea>
-              <div *ngIf="submitted && f.title.errors">
-                <mat-error *ngIf="f.Nombre.errors.required">Este campo es obligatorio</mat-error>
+              <textarea matInput placeholder="Descripción de la actividad" formControlName="Descripcion"></textarea>
+              <div *ngIf="submitted && f.Descripcion.errors">
+                <mat-error *ngIf="f.Descripcion.errors.required">Este campo es obligatorio</mat-error>
               </div>
             </mat-form-field>
           </div>
 
           <mat-form-field appearance="outline" [style.width.%]="100">
-            <mat-label>Sección</mat-label>
-            <mat-select formControlName="sectionId">
-              <mat-option *ngFor="let section of sections" [value]="section.ID_Seccion">
-                {{section.Nombre}}
+            <mat-label>Competencia</mat-label>
+            <mat-select formControlName="Competencia_ID">
+              <mat-option *ngFor="let compentencia of competencias" [value]="compentencia.Id">
+                {{compentencia.Value}}
               </mat-option>
             </mat-select>
-            <div *ngIf="submitted && f.sectionId.errors">
-              <mat-error *ngIf="f.sectionId.errors.required">Este campo es obligatorio</mat-error>
+            <div *ngIf="submitted && f.Competencia_ID.errors">
+              <mat-error *ngIf="f.Competencia_ID.errors.required">Este campo es obligatorio</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <mat-label>Mecanica</mat-label>
+            <mat-select formControlName="Mecanica_ID">
+              <mat-option *ngFor="let Mecanica of mecanicas" [value]="Mecanica.Id">
+                {{Mecanica.Value}}
+              </mat-option>
+            </mat-select>
+            <div *ngIf="submitted && f.Mecanica_ID.errors">
+              <mat-error *ngIf="f.Mecanica_ID.errors.required">Este campo es obligatorio</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <mat-label>Grado</mat-label>
+            <mat-select formControlName="Grado_ID">
+              <mat-option *ngFor="let grade of grades" [value]="grade.value">
+                {{grade.viewValue}}
+              </mat-option>
+            </mat-select>
+            <div *ngIf="submitted && f.Grado_ID.errors">
+              <mat-error *ngIf="f.Grado_ID.errors.required">Este campo es obligatorio</mat-error>
             </div>
           </mat-form-field>
 
           <ion-row>
             <ion-col>
               <label class="time-label-padding">Fecha de inicio : </label>
-              <p-calendar formControlName="start_datetime" styleClass="p-calendar-class" [showTime]="true"
+              <p-calendar (ngModelChange)="onStartDateChange($event)" formControlName="FechaInicio" styleClass="p-calendar-class" [showTime]="true"
                           inputId="time" #startDate required="true" showButtonBar="true"
               ></p-calendar>
             </ion-col>
             <ion-col>
               <label class="time-label-padding">Fecha de fin : </label>
-              <p-calendar formControlName="end_datetime" styleClass="p-calendar-class" [showTime]="true"
-                          inputId="time" required="true" showButtonBar="true"
-                          [minDate]="getDateWithOneHour( startDate.value )"
+              <p-calendar formControlName="FechaFin" styleClass="p-calendar-class" [showTime]="true"
+                          inputId="time"
+                          [minDate]="getDateWithFourHour( startDate.value )"
               ></p-calendar>
             </ion-col>
           </ion-row>
 
-        </form>
-      </mat-card-content>
-    </mat-card>
+          <input #file type="file" hidden #fileUpload type="file" accept="image/*" (click)="fileUpload.value = null"
+                 (change)="addNewImg($event.target.files)">
+
+          <ion-row class="padding-20px">
+            <ion-button (click)="fileUpload.click()">
+              <ion-icon slot="start" name="camera-outline"></ion-icon>
+              <mat-label> Agregue algunas imagenes</mat-label>
+            </ion-button>
+          </ion-row>
+
+          <label class="time-label-padding padding-20px" *ngIf="imgs.length > 0"> Imagenes </label>
+
+          <ion-row class="padding-20px">
+            <div *ngFor="let img of imgs; let i = index">
+              <ion-row>
+                <ion-col>
+                  <ion-row>
+                    <img [src]="img" class="loadable-imgs" alt=""/>
+                  </ion-row>
+                  <ion-row>
+                    <button mat-button color="warn" (click)="removeImg( i )">
+                      remover imagen
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+            </div>
+          </ion-row>
+
+        </mat-card-content>
+      </mat-card>
+
+    </form>
+
 
   </ion-grid>
 </ion-content>

@@ -1,6 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SectionsService} from '../../../shared/services/sections.service';
+import {environment} from '../../../../environments/environment';
+import {SchoolService} from '../../../shared/services/school.service';
+import {AlertService} from '../../../shared/services/alert.service';
+import {ActivitiesService} from '../../../shared/services/activities.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-activities-form',
@@ -11,43 +16,98 @@ export class ActivitiesFormComponent implements OnInit {
 
   formGroup: FormGroup;
   submitted: boolean;
-  sections: any;
+  competencias: any;
+  mecanicas: any;
+  grades = environment.grades;
+  imgs = [];
 
-  constructor(private formBuilder: FormBuilder, private sectionsService: SectionsService
+  constructor(
+    private formBuilder: FormBuilder,
+    private sectionsService: SectionsService,
+    private schoolService: SchoolService,
+    private alertService: AlertService,
+    private activitiesService: ActivitiesService,
+    private route: Router
   ) {
   }
 
   ngOnInit() {
     this.createForm();
 
-    this.sectionsService.getSections().subscribe((sections: any) => {
-      this.sections = sections;
+    this.schoolService.getCompetencies().subscribe(x => {
+      this.competencias = x;
+    });
+
+    this.schoolService.getMecanicas().subscribe(x => {
+      this.mecanicas = x;
     });
   }
 
   private createForm() {
     this.formGroup = this.formBuilder.group({
-      title: [null, Validators.required],
-      description: [null, Validators.required],
-      sectionId: [null, Validators.required],
-      start_datetime: [null, Validators.required],
-      end_datetime: [null, Validators.required],
+      Titulo: [null, Validators.required],
+      Descripcion: [null, Validators.required],
+      Grado_ID: [null, Validators.required],
+      Competencia_ID: [null, Validators.required],
+      Mecanica_ID: [null, Validators.required],
+      FechaInicio: [null, Validators.required],
+      FechaFin: [null, Validators.required]
     });
   }
 
   onSubmit() {
     this.submitted = true;
+
+    if (this.formGroup.status !== 'VALID') {
+      this.alertService.error('Complete todos los campos');
+    } else {
+      const activity = this.formGroup.value;
+      activity.Estado = 1;
+      activity.Contenido_Json = JSON.stringify(this.imgs);
+
+      this.alertService.presentLoading();
+      this.activitiesService.createActivity(activity).subscribe(
+        (data) => {
+          this.alertService.dismissLoading();
+          this.alertService.success('la actividad se creo correctamente');
+          this.route.navigate(['school/activities']);
+        },
+        (error) => {
+          this.alertService.dismissLoading();
+          this.alertService.error('Hubo un error');
+        });
+    }
+  }
+
+  addNewImg(e: File[]) {
+    const file = e[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      this.imgs.push(reader.result.toString());
+    };
+    reader.readAsDataURL(file);
+  }
+
+  removeImg(i) {
+    this.imgs.splice(i, 1);
   }
 
   get f() {
     return this.formGroup.controls;
   }
 
-  getDateWithOneHour(value: Date) {
-    if ( !value ){
+  getDateWithFourHour(value: Date) {
+    if (!value) {
       return new Date();
     }
-    value.setHours(value.getHours() + 1);
-    return value;
+    const date = new Date(value.getTime());
+    date.setHours(date.getHours() + 4);
+    return date;
+  }
+
+  onStartDateChange($event: Event) {
+    if (this.f.FechaInicio.value.getTime() >= this.f.FechaFin.value.getTime()) {
+      this.f.FechaFin.setValue(this.getDateWithFourHour(this.f.FechaInicio.value));
+    }
   }
 }

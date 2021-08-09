@@ -51,6 +51,10 @@ export class LoginPageComponent implements OnInit {
       case 'Asistente':
         this.router.navigate(['/teachers']);
         break;
+
+      default:
+        this.router.navigate(['/school']);
+        break;
     }
   }
 
@@ -76,7 +80,7 @@ export class LoginPageComponent implements OnInit {
         },
         error => {
           this.alertService.dismissLoading();
-          this.alertService.error( 'Usuario o contraseña incorrectos' );
+          this.alertService.error('Usuario o contraseña incorrectos');
         }
       );
   }

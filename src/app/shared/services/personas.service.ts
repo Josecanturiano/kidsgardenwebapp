@@ -16,6 +16,11 @@ export class PersonService {
     return this.http.get(`${environment.API_URL}/institucion/getPersonasByQuery?Q=` + fullName + `&institucion_id=` + this.auth.institutionId);
   }
 
+  getTutorById(tutorId) {
+    console.log( `${environment.API_URL}/institucion/getInfoTutor?id=` + tutorId + '&Institucion_ID=' + this.auth.institutionId );
+    return this.http.get(`${environment.API_URL}/institucion/getInfoTutor?id=` + tutorId + '&Institucion_ID=' + this.auth.institutionId);
+  }
+
   getTeachers() {
     return this.http.get(`${environment.API_URL}/institucion/GetDocentesAll?Institucion_ID=` + this.auth.institutionId);
   }
@@ -41,7 +46,7 @@ export class PersonService {
   }
 
   getUser(id) {
-    return this.http.get(`${environment.API_URL}/institucion/getInfoEstudiante/?id=` + id + `&Institucion_ID=` + this.auth.institutionId);
+    return this.http.get(`${environment.API_URL}/institucion/getInfoDirector/?id=` + id + `&Institucion_ID=` + this.auth.institutionId);
   }
 
   createPerson(person) {

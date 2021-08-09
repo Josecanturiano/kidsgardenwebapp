@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { StudentsService } from 'src/app/shared/services/students.service';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthService } from 'src/app/login/services/auth-service.service';
-import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
-import { PersonService } from 'src/app/shared/services/personas.service';
-import { SectionsService } from 'src/app/shared/services/sections.service';
-import { ActivatedRoute } from '@angular/router';
-import { AddStudentToSectionComponent } from '../add-student-to-section/add-student-to-section.component';
-import { AlertService } from 'src/app/shared/services/alert.service';
+import {Component, OnInit} from '@angular/core';
+import {StudentsService} from 'src/app/shared/services/students.service';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {AuthService} from 'src/app/login/services/auth-service.service';
+import {ConfirmDialogComponent} from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import {PersonService} from 'src/app/shared/services/personas.service';
+import {SectionsService} from 'src/app/shared/services/sections.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AddStudentToSectionComponent} from '../add-student-to-section/add-student-to-section.component';
+import {AlertService} from 'src/app/shared/services/alert.service';
 
 @Component({
   selector: 'app-section-view',
@@ -24,30 +24,40 @@ export class SectionViewComponent implements OnInit {
     private personService: PersonService,
     private authService: AuthService,
     private activedRouter: ActivatedRoute,
-    private alertService: AlertService
-  ) { }
+    private alertService: AlertService,
+    private route: Router,
+  ) {
+  }
 
   cols: any[];
   students: any;
+  section: any;
+  asistant: any;
   loading = true;
+  teacher: any;
+
 
   ngOnInit() {
     this.cols = [
-      { field: 'Nombre', header: 'Nombre' },
-      { field: 'Apellidos', header: 'Apellido' },
-      { field: 'Edad', header: 'Edad' },
-      { field: 'Genero', header: 'Genero' },
-      { field: 'Codigo', header: 'Codigo' },
+      {field: 'Nombre', header: 'Nombre'},
+      {field: 'Apellidos', header: 'Apellido'},
+      {field: 'Edad', header: 'Edad'},
+      {field: 'Genero', header: 'Genero'},
+      {field: 'Codigo', header: 'Codigo'},
     ];
     this.fillData();
   }
 
-  fillData(){
-    this.studentService.getAllStudentsBySection( this.activedRouter.snapshot.paramMap.get('id') ).subscribe( students => {
-      this.loading = false;
-      console.log( students );
+  fillData() {
+    this.studentService.getAllStudentsBySection(this.activedRouter.snapshot.paramMap.get('id')).subscribe(students => {
       this.students = students;
-    } );
+    });
+
+    this.studentService.getSectionInfo(this.activedRouter.snapshot.paramMap.get('id')).subscribe(section => {
+      this.loading = false;
+      this.teacher = section['Maestro'];
+      this.asistant = section['Asistente'];
+    });
   }
 
   openInscriptionDialog() {
@@ -64,13 +74,13 @@ export class SectionViewComponent implements OnInit {
     });
   }
 
-  enrollStudent( model ){
-    this.studentService.enroll( model ).subscribe( res => {
+  enrollStudent(model) {
+    this.studentService.enroll(model).subscribe(res => {
       this.alertService.success('Alumno inscrito correctamente');
-    } );
+    });
   }
 
-  openDialog( id ) {
+  openDialog(id) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         message: 'Esta seguro que desea eliminar este elemento ?',
@@ -89,7 +99,7 @@ export class SectionViewComponent implements OnInit {
         a.click();
         a.remove();
         snack.dismiss();
-        this.personService.deleteUser( id ).subscribe(
+        this.personService.deleteUser(id).subscribe(
           data => {
             this.snackBar.open('Elemento eliminado', 'Aceptar', {
               duration: 3000,
@@ -101,10 +111,17 @@ export class SectionViewComponent implements OnInit {
             });
           }
         );
-      }else {
+      } else {
         dialogRef.close();
       }
     });
   }
 
+  goToTeacherView() {
+    this.route.navigate([`school/teachers/view/${this.teacher['Id_Usuario']}`]);
+  }
+
+  goToAsistantView() {
+    this.route.navigate([`school/assistants/view/${this.asistant['Id_Usuario']}`]);
+  }
 }

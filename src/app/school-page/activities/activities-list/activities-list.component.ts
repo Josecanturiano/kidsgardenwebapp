@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ActivitiesService} from '../../../shared/services/activities.service';
 
 @Component({
   selector: 'app-activities-list',
@@ -7,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ActivitiesListComponent implements OnInit {
   cols: any;
-  loading: any;
+  loading:any;
   activities: any;
 
-  constructor() { }
+  constructor(
+    private activitiesService: ActivitiesService
+  ) { }
 
   ngOnInit() {
     this.cols = [
@@ -24,5 +27,11 @@ export class ActivitiesListComponent implements OnInit {
     this.fillData();
   }
 
-  private fillData() {}
+  private fillData() {
+    this.loading = true;
+    this.activitiesService.getAllActivities().subscribe( x => {
+      this.loading = false;
+      this.activities = x;
+    } );
+  }
 }

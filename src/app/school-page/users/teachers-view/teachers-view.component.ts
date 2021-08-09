@@ -42,18 +42,18 @@ export class TeachersViewComponent implements OnInit {
   ) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
 
     this.createForm();
 
-    this.alertService.presentLoading();
+    await this.alertService.presentLoading();
 
     if (this.activedRouter.snapshot.paramMap.get('id')) {
 
       this.personService.getUser(this.activedRouter.snapshot.paramMap.get('id'))
         .subscribe((x: any) => {
-            this.teacher = x.Usuario;
-            this.formGroup.patchValue(x.Usuario);
+            this.teacher = x;
+            this.formGroup.patchValue(x);
             console.log(x.Usuario);
             this.alertService.dismissLoading();
           },
@@ -128,7 +128,7 @@ export class TeachersViewComponent implements OnInit {
       .subscribe(
         data => {
           this.alertService.dismissLoading();
-          this.route.navigate(['school/teachers']);
+          this.route.navigate(['school/users']);
           this.alertService.success('Modificación completa');
         },
         error => {

@@ -15,26 +15,27 @@
   </ion-header>
   <ion-grid>
 
-    <mat-card class="example-card" class="form">
-      <mat-card-header>
-        <ion-row class="ion-justify-content-between max-width">
-          <ion-col>
-            <mat-card-title>Detalles de la evaluación</mat-card-title>
-          </ion-col>
-          <ion-row class="ion-padding">
-            <button class="margin-vertical" mat-raised-button color="primary">Guardar</button>
-          </ion-row>
-        </ion-row>
-      </mat-card-header>
-      <mat-card-content>
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
 
-        <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+      <mat-card class="example-card" class="form">
+        <mat-card-header>
+          <ion-row class="ion-justify-content-between max-width">
+            <ion-col>
+              <mat-card-title>Detalles de la evaluación</mat-card-title>
+            </ion-col>
+            <ion-row class="ion-padding">
+              <button class="margin-vertical" mat-raised-button color="primary">Guardar</button>
+            </ion-row>
+          </ion-row>
+        </mat-card-header>
+        <mat-card-content>
+
 
           <div>
             <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
               <mat-label>Nombre de la prueba</mat-label>
-              <input matInput placeholder="Nombre de la prueba" formControlName="title">
-              <div *ngIf="submitted && f.title.errors">
+              <input matInput placeholder="Nombre de la prueba" formControlName="Nombre">
+              <div *ngIf="submitted && f.Nombre.errors">
                 <mat-error *ngIf="f.Nombre.errors.required">Este campo es obligatorio</mat-error>
               </div>
             </mat-form-field>
@@ -43,37 +44,37 @@
           <div>
             <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
               <mat-label>Descripción de la prueba</mat-label>
-              <textarea matInput placeholder="Descripción de la prueba" formControlName="description"></textarea>
-              <div *ngIf="submitted && f.title.errors">
-                <mat-error *ngIf="f.Nombre.errors.required">Este campo es obligatorio</mat-error>
+              <textarea matInput placeholder="Descripción de la prueba" formControlName="Descripcion"></textarea>
+              <div *ngIf="submitted && f.Nombre.errors">
+                <mat-error *ngIf="f.Descripcion.errors.required">Este campo es obligatorio</mat-error>
               </div>
             </mat-form-field>
           </div>
 
           <mat-form-field appearance="outline" [style.width.%]="100">
             <mat-label>Sección</mat-label>
-            <mat-select formControlName="sectionId">
+            <mat-select formControlName="Seccion_ID">
               <mat-option *ngFor="let section of sections" [value]="section.ID_Seccion">
                 {{section.Nombre}}
               </mat-option>
             </mat-select>
-            <div *ngIf="submitted && f.sectionId.errors">
-              <mat-error *ngIf="f.sectionId.errors.required">Este campo es obligatorio</mat-error>
+            <div *ngIf="submitted && f.Seccion_ID.errors">
+              <mat-error *ngIf="f.Seccion_ID.errors.required">Este campo es obligatorio</mat-error>
             </div>
           </mat-form-field>
 
           <ion-row>
             <ion-col>
               <label class="time-label-padding">Fecha de inicio : </label>
-              <p-calendar formControlName="start_datetime" styleClass="p-calendar-class" [showTime]="true"
+              <p-calendar (ngModelChange)="onStartDateChange($event)" formControlName="FechaInicio" styleClass="p-calendar-class" [showTime]="true"
                           inputId="time" #startDate
               ></p-calendar>
             </ion-col>
             <ion-col>
               <label class="time-label-padding">Fecha de fin : </label>
-              <p-calendar formControlName="end_datetime" styleClass="p-calendar-class" [showTime]="true"
+              <p-calendar formControlName="FechaFin" styleClass="p-calendar-class" [showTime]="true"
                           inputId="time"
-                          [minDate]="getDateWithOneHour( startDate.value )"
+                          [minDate]="getDateWithFourHour( startDate.value )"
               ></p-calendar>
             </ion-col>
           </ion-row>
@@ -89,6 +90,7 @@
                     <ion-icon slot="start" name="add-outline"></ion-icon>
                     <mat-label>Agregar nueva pregunta</mat-label>
                   </ion-button>
+
                 </ion-row>
               </ion-row>
             </mat-card-header>
@@ -106,10 +108,18 @@
                                placeholder="Pregunta numero: {{i + 1}}">
                       </mat-form-field>
 
-                      <ion-button (click)="addAnswerForQuestion( i )">
-                        <ion-icon slot="start" name="add-outline"></ion-icon>
-                        <mat-label>Agregar respuesta</mat-label>
-                      </ion-button>
+                      <ion-row>
+
+                        <ion-button (click)="addAnswerForQuestion( i )">
+                          <ion-icon slot="start" name="add-outline"></ion-icon>
+                          <mat-label>Agregar respuesta</mat-label>
+                        </ion-button>
+
+                        <button mat-icon-button color="warn" (click)="removeQuestion( i )">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+
+                      </ion-row>
 
                       <div formArrayName="answers">
                         <ion-row>
@@ -120,12 +130,12 @@
                                 <ion-col>
                                   <div class="answer-card">
                                     <div [style.width.%]="70">
-                                      <input #file type="file" hidden #fileUpload type="file" accept="image/*"
+                                      <input #file type="file" hidden #fileUpload accept="image/*"
                                              (click)="fileUpload.value = null"
                                              (change)="convertFileToBase64($event.target.files, answer)">
                                       <input type="text" formControllName="img" hidden>
                                       <ion-row class="ion-justify-content-center">
-                                        <img class="answer-img" [src]="getImageForAnswer( answer )">
+                                        <img class="answer-img" [src]="answer.controls.img.value">
                                       </ion-row>
                                       <ion-row class="ion-justify-content-center">
                                         <ion-button (click)="fileUpload.click()">
@@ -142,8 +152,13 @@
                                              placeholder="Respuesta numero: {{i + 1}}">
                                     </mat-form-field>
 
-                                    <mat-checkbox matCheckbox class="example-margin">Es una respuesta correcta ?
+                                    <mat-checkbox formControlName="isCorrectAnswer" class="example-margin">Es una
+                                      respuesta correcta ?
                                     </mat-checkbox>
+
+                                    <button mat-icon-button color="warn" (click)="removeAnswerForQuestion(i, index)">
+                                      <mat-icon>delete</mat-icon>
+                                    </button>
 
                                   </div>
                                 </ion-col>
@@ -174,10 +189,11 @@
             <button type="submit">Guardar</button>
           </p> -->
 
-        </form>
 
-      </mat-card-content>
-    </mat-card>
+        </mat-card-content>
+      </mat-card>
+
+    </form>
 
   </ion-grid>
 </ion-content>

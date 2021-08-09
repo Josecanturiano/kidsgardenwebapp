@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SectionsFormComponent } from './sections-form/sections-form.component';
 import { SectionViewComponent } from './section-view/section-view.component';
 import { AddStudentToSectionComponent } from './add-student-to-section/add-student-to-section.component';
+import {MultiSelectModule} from 'primeng/multiselect';
 
 
 @NgModule({
@@ -21,16 +22,17 @@ import { AddStudentToSectionComponent } from './add-student-to-section/add-stude
     SectionViewComponent,
     AddStudentToSectionComponent
   ],
-  imports: [
-    CommonModule,
-    SectionsRoutingModule,
-    IonicModule,
-    StudentsPageRoutingModule,
-    MaterialModule,
-    PrimengModule,
-    TextMaskModule,
-    FormsModule,
-    ReactiveFormsModule,
-  ]
+    imports: [
+        CommonModule,
+        SectionsRoutingModule,
+        IonicModule,
+        StudentsPageRoutingModule,
+        MaterialModule,
+        PrimengModule,
+        TextMaskModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MultiSelectModule,
+    ]
 })
 export class SectionsModule { }

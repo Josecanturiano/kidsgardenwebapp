@@ -9,7 +9,15 @@ const routes: Routes = [
     component: TeachersPagePage,
     children: [
       {
-        path: 'sections',
+        path: 'activities',
+        loadChildren: () => import('./teachers-activities/teachers-activities.module').then( m => m.TeachersActivitiesModule)
+      },
+      {
+        path: 'evaluations',
+        loadChildren: () => import('./teachers-evaluations/teachers-evaluations.module').then( m => m.TeachersEvaluationsModule)
+      },
+      {
+        path: 'section',
         loadChildren: () => import('./teachers-sections-page/teachers-sections-page.module').then( m => m.TeachersSectionsPageModule)
       },
       {
@@ -18,7 +26,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'sections',
+        redirectTo: 'profile',
         pathMatch: 'full'
       }
     ]

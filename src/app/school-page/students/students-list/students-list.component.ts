@@ -6,6 +6,8 @@ import {AuthService} from 'src/app/login/services/auth-service.service';
 import {ConfirmDialogComponent} from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import {PersonService} from 'src/app/shared/services/personas.service';
 import {StudentsService} from 'src/app/shared/services/students.service';
+import {environment} from '../../../../environments/environment';
+import {SectionsService} from '../../../shared/services/sections.service';
 
 @Component({
   selector: 'app-students-list',
@@ -17,6 +19,8 @@ export class StudentsListComponent implements OnInit {
   cols: any[];
   students: any;
   loading = true;
+  grades = environment.grades;
+  sections: any;
 
   constructor(
     private studentService: StudentsService,
@@ -24,7 +28,8 @@ export class StudentsListComponent implements OnInit {
     private snackBar: MatSnackBar,
     private personService: PersonService,
     private authService: AuthService,
-    private route: Router
+    private route: Router,
+    private sectionsService: SectionsService,
   ) {
   }
 
@@ -37,6 +42,10 @@ export class StudentsListComponent implements OnInit {
       {field: 'Direccion', header: 'Direccion'},
       {field: 'Fecha_De_Nacimiento', header: 'Fecha de nacimiento'},
     ];
+
+    this.sectionsService.getSections().subscribe(sections => {
+      this.sections = sections;
+    });
 
     this.fillData();
   }
@@ -86,4 +95,7 @@ export class StudentsListComponent implements OnInit {
     });
   }
 
+  onChange($event: Event) {
+    console.log($event);
+  }
 }

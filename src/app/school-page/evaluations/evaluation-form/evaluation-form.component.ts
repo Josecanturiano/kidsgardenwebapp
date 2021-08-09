@@ -1,7 +1,10 @@
 import {Component, ComponentFactoryResolver, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {AlertService} from 'src/app/shared/services/alert.service';
 import {SectionsService} from 'src/app/shared/services/sections.service';
+import {SchoolService} from '../../../shared/services/school.service';
+import {ActivitiesService} from '../../../shared/services/activities.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-evaluation-form',
@@ -17,7 +20,11 @@ export class EvaluationFormComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private sectionsService: SectionsService
+    private sectionsService: SectionsService,
+    private alertService: AlertService,
+    private schoolService: SchoolService,
+    private route: Router,
+    private activitiesService: ActivitiesService
   ) {
   }
 
@@ -31,12 +38,12 @@ export class EvaluationFormComponent implements OnInit {
 
   createForm() {
     this.formGroup = this.formBuilder.group({
-      title: [null, Validators.required],
-      description: [null, Validators.required],
-      sectionId: [null, Validators.required],
-      start_datetime: [null, Validators.required],
-      end_datetime: [null, Validators.required],
-      questions: this.formBuilder.array([])
+      Nombre: [null, Validators.required],
+      Descripcion: [null, Validators.required],
+      Seccion_ID: [null, Validators.required],
+      FechaInicio: [null, Validators.required],
+      FechaFin: [null, Validators.required],
+      questions: this.formBuilder.array([], Validators.required),
     });
   }
 
@@ -53,10 +60,6 @@ export class EvaluationFormComponent implements OnInit {
 
   get f() {
     return this.formGroup.controls;
-  }
-
-  getImageForAnswer(answer) {
-    return answer.controls.img.value || this.answerImgTemplate;
   }
 
   fq(i) {
@@ -82,7 +85,7 @@ export class EvaluationFormComponent implements OnInit {
   getNewQuestionsControls() {
     return this.formBuilder.group({
       question: ['', Validators.required],
-      answers: this.formBuilder.array([]),
+      answers: this.formBuilder.array([], this.haveMoreThanOneValidAnswer()),
     });
   }
 
@@ -94,23 +97,71 @@ export class EvaluationFormComponent implements OnInit {
     (this.questions.controls[i].get('answers') as FormArray).push(this.getAnswerForQuestion());
   }
 
+  removeAnswerForQuestion(i, index) {
+    (this.questions.controls[i].get('answers') as FormArray).removeAt(index);
+  }
+
   getAnswerForQuestion() {
     return this.formBuilder.group({
       description: ['', Validators.required],
-      isCorrectAnswer: [false, Validators.required],
-      img: ''
+      isCorrectAnswer: false,
+      img: this.answerImgTemplate
     });
   }
 
   onSubmit() {
     this.submitted = true;
+
+    if (this.formGroup.status !== 'VALID') {
+      this.alertService.error('Complete todos los campos');
+    } else {
+
+      const evaluation = this.formGroup.value;
+      evaluation.Estado = 1;
+      evaluation.ContenidoJSON = JSON.stringify(evaluation.questions);
+
+      delete evaluation.answers;
+      delete evaluation.questions;
+
+      this.alertService.presentLoading();
+      this.activitiesService.createEvaluation(evaluation).subscribe(
+        (data) => {
+          console.log(data);
+          this.alertService.dismissLoading();
+          this.alertService.success('La evaluación se creo de manera correcta !');
+          this.route.navigate(['school/evaluations']);
+        },
+        (error) => {
+          console.log(error);
+          this.alertService.dismissLoading();
+        });
+    }
+
   }
 
-  getDateWithOneHour(value: Date) {
-    if ( !value ){
+  getDateWithFourHour(value: Date) {
+    if (!value || !(value instanceof Date)) {
       return new Date();
     }
-    value.setHours(value.getHours() + 1);
-    return value;
+    const date = new Date(value.getTime());
+    date.setHours(date.getHours() + 4);
+    return date;
+  }
+
+  haveMoreThanOneValidAnswer(): ValidatorFn {
+    return (formArray: FormArray): { [key: string]: any } | null => {
+      let valid = false;
+      formArray.controls.forEach((x: FormGroup) => {
+        valid = valid || x.value.isCorrectAnswer === true;
+      });
+      return valid ? null : {error: 'Debe haber almenos una respuesta correcta'};
+    };
+
+  }
+
+  onStartDateChange($event: Event) {
+    if (this.f.FechaInicio.value.getTime() >= this.f.FechaFin.value.getTime()) {
+      this.f.FechaFin.setValue(this.getDateWithFourHour(this.f.FechaInicio.value));
+    }
   }
 }

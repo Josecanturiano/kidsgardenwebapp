@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TeachersFormComponent } from './teachers-form/teachers-form.component';
 import { TeachersViewComponent } from './teachers-view/teachers-view.component';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import {IonicModule} from '@ionic/angular';
 
 @NgModule({
   declarations: [
@@ -18,15 +19,16 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
     TeachersViewComponent,
     ConfirmDialogComponent
   ],
-  imports: [
-    CommonModule,
-    TeachersRoutingModule,
-    PrimengModule,
-    MaterialModule,
-    PrimengModule,
-    TextMaskModule,
-    FormsModule,
-    ReactiveFormsModule  
-  ],  
+    imports: [
+        CommonModule,
+        TeachersRoutingModule,
+        PrimengModule,
+        MaterialModule,
+        PrimengModule,
+        TextMaskModule,
+        FormsModule,
+        ReactiveFormsModule,
+        IonicModule
+    ],
 })
 export class TeachersModule { }

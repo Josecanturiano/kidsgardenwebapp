@@ -35,6 +35,7 @@ export class TeachersListComponent implements OnInit {
     this.teachersService.getAllTeachers().subscribe( teachers => {
       this.loading = false;
       this.teachers = teachers;
+      console.log( this.teachers );
     } );
 
   }

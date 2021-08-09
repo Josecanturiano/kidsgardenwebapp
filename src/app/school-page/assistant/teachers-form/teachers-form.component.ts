@@ -78,7 +78,7 @@ export class TeachersFormComponent implements OnInit {
         data => {
           this.alertService.dismissLoading();
           this.route.navigate(['school/assistants']);
-          this.alertService.success('Registracion completa');
+          this.alertService.success('Registro completo');
           },
         error => {
             this.alertService.dismissLoading();

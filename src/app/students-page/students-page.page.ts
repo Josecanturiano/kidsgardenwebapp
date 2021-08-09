@@ -19,8 +19,8 @@ export class StudentsPagePage {
   }
 
   public appPages = [
-    { title: 'Inicio', url: '/students/home', icon: 'home' },
-    { title: 'Mi perfil', url: '/students/profile', icon: 'child_care' },
+    { Titulo: 'Inicio', url: '/students/home', icon: 'home' },
+    { Titulo: 'Mi perfil', url: '/students/profile', icon: 'child_care' },
   ];
 
   logout(){

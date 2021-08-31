@@ -14,14 +14,19 @@
     </ion-toolbar>
   </ion-header>
   <ion-grid>
-    
-    <ion-row>
-      <ion-col>
-        <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-          <div class="example-box" (click)="sound(movie)" *ngFor="let movie of movies" cdkDrag>{{movie}}</div>
+
+    <ion-col>
+      <ion-row class="ion-justify-content-center">
+      <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+          <div class="example-box" (mousedown)="sound(movie)" *ngFor="let movie of movies; let i = index;" cdkDrag>
+            <img class="img-number-class" [src]="imgs[movie - 1]" alt="">
+          </div>
         </div>
-      </ion-col>  
-    </ion-row>      
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <button (click)="evaluate()" class="margin-vertical button-width" mat-raised-button color="primary">Completar</button>
+      </ion-row>
+    </ion-col>
 
   </ion-grid>
 </ion-content>

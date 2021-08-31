@@ -9,6 +9,9 @@ import {SectionsService} from 'src/app/shared/services/sections.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AddStudentToSectionComponent} from '../add-student-to-section/add-student-to-section.component';
 import {AlertService} from 'src/app/shared/services/alert.service';
+import {ReportBySectionComponent} from '../../../shared/components/report-by-section/report-by-section.component';
+import {SchoolService} from '../../../shared/services/school.service';
+import {ChangeTeacherForSectionComponent} from '../change-teacher-for-section/change-teacher-for-section.component';
 
 @Component({
   selector: 'app-section-view',
@@ -26,6 +29,8 @@ export class SectionViewComponent implements OnInit {
     private activedRouter: ActivatedRoute,
     private alertService: AlertService,
     private route: Router,
+    private sectionService: SectionsService,
+    private schoolService: SchoolService
   ) {
   }
 
@@ -53,10 +58,10 @@ export class SectionViewComponent implements OnInit {
       this.students = students;
     });
 
-    this.studentService.getSectionInfo(this.activedRouter.snapshot.paramMap.get('id')).subscribe(section => {
+    this.studentService.getSectionInfo(this.activedRouter.snapshot.paramMap.get('id')).subscribe((section: any) => {
       this.loading = false;
-      this.teacher = section['Maestro'];
-      this.asistant = section['Asistente'];
+      this.teacher = section.Maestro;
+      this.asistant = section.Asistente;
     });
   }
 
@@ -83,7 +88,7 @@ export class SectionViewComponent implements OnInit {
   openDialog(id) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
-        message: 'Esta seguro que desea eliminar este elemento ?',
+        message: 'Esta seguro que desea desinscribir este estudiante ?',
         buttonText: {
           ok: 'Si',
           cancel: 'No'
@@ -99,18 +104,18 @@ export class SectionViewComponent implements OnInit {
         a.click();
         a.remove();
         snack.dismiss();
-        this.personService.deleteUser(id).subscribe(
-          data => {
-            this.snackBar.open('Elemento eliminado', 'Aceptar', {
-              duration: 3000,
-            });
-          },
-          error => {
-            this.snackBar.open('ah ocurrido un error...', 'Aceptar', {
-              duration: 3000,
-            });
-          }
-        );
+        // this.sectionService.unsuscribe(id).subscribe(
+        //   data => {
+        //     this.snackBar.open('El estudiante fue removido', 'Aceptar', {
+        //       duration: 3000,
+        //     });
+        //   },
+        //   error => {
+        //     this.snackBar.open('ah ocurrido un error...', 'Aceptar', {
+        //       duration: 3000,
+        //     });
+        //   }
+        // );
       } else {
         dialogRef.close();
       }
@@ -118,10 +123,66 @@ export class SectionViewComponent implements OnInit {
   }
 
   goToTeacherView() {
-    this.route.navigate([`school/teachers/view/${this.teacher['Id_Usuario']}`]);
+    this.route.navigate([`school/teachers/view/${this.teacher.Id_Usuario}`]);
   }
 
   goToAsistantView() {
-    this.route.navigate([`school/assistants/view/${this.asistant['Id_Usuario']}`]);
+    this.route.navigate([`school/assistants/view/${this.asistant.Id_Usuario}`]);
+  }
+
+  changeTeacher() {
+
+    const dialogo1 = this.dialog.open((ChangeTeacherForSectionComponent), {
+      data: {
+        Seccion_ID: this.activedRouter.snapshot.paramMap.get('id')
+      }
+    });
+
+    dialogo1.afterClosed().subscribe(art => {
+      if (art !== undefined) {
+        // this.schoolService.changeTeacher().subscribe( x => {
+        //
+        // } )
+      }
+    });
+  }
+
+  changeAssistant() {
+
+  }
+
+  generateReport() {
+    this.dialog.open(ReportBySectionComponent, {
+      maxHeight: '90vh',
+      data: {
+        type: 'SectionMechanics',
+        list: [
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+          {estudiante: 'estudiante 1', a: 1, b: 2, c: 3, d: 4},
+        ]
+      },
+    });
   }
 }

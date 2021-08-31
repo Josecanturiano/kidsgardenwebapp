@@ -17,8 +17,8 @@
     <ion-row class="ion-padding">
       <ion-row class="ion-padding">
         <ion-button (click)="abrirDialogo()">Agregar seccion</ion-button>
-      </ion-row> 
-      <p-table rowHover="true" [loading]="loading" [columns]="cols" [value]="sections" [paginator]="true" [rows]="6" [showCurrentPageReport]="true" 
+      </ion-row>
+      <p-table rowHover="true" [loading]="loading" [columns]="cols" [value]="sections" [paginator]="true" [rows]="6" [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[6,15,50]">
             <ng-template pTemplate="header" let-columns>
                 <tr>
@@ -37,16 +37,16 @@
                     </td>
                     <td>
                       <a [routerLink]="['view', rowData['ID_Seccion']]">
-                        <span slot="start" class="material-icons cursos-pointer">list</span>                 
+                        <span slot="start" class="material-icons cursos-pointer">list</span>
                       </a>
-                      <a (click)="openDialog()">
-                        <span slot="start" class="material-icons cursos-pointer color-red">delete_outline</span>                 
-                      </a>
-                    </td>                    
+<!--                      <a (click)="openDialog()">-->
+<!--                        <span slot="start" class="material-icons cursos-pointer color-red">delete_outline</span>                 -->
+<!--                      </a>-->
+                    </td>
                 </tr>
             </ng-template>
         </p-table>
-      
-    </ion-row> 
+
+    </ion-row>
   </ion-grid>
 </ion-content>

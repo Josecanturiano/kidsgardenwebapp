@@ -1,0 +1,56 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Evaluaciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Evaluaciones</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-grid>
+
+    <ion-title class="ion-padding" size="large">Evaluaciones asingadas</ion-title>
+
+    <ion-row>
+      <ng-container *ngIf="!availableEvaluations.length > 0">
+        <mat-card class="example-card form">
+          <mat-card-header>
+            <ion-row class="ion-justify-content-between max-width">
+              <ion-col>
+                <mat-card-title>Evaluaciones pendientes</mat-card-title>
+              </ion-col>
+            </ion-row>
+          </mat-card-header>
+          <mat-card-content>
+
+            <ion-col class="ion-align-self-center">
+              <img class="no-element-img"
+                   src="https://thumbs.dreamstime.com/b/cute-little-kid-girl-think-question-mark-188986232.jpg" alt="">
+              <h3>Parece que aun no hay nada por aqui</h3>
+            </ion-col>
+
+          </mat-card-content>
+        </mat-card>
+      </ng-container>
+      <ion-col size="4" *ngFor="let evaluation of availableEvaluations; let i = index">
+        <ion-card (click)="complete(evaluation.ID_Evaluacion)">
+          <img class="img" src="data:image/png;base64,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"/>
+          <ion-card-header>
+            <ion-card-subtitle>{{evaluation.Evaluacion}}</ion-card-subtitle>
+            <ion-card-title>{{evaluation.Descripcion}}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            {{evaluation.FechaInicio.substring(0,10)}} {{evaluation.FechaInicio.substring(11,19)}} - {{evaluation.FechaFin.substring(0,10)}} {{evaluation.FechaFin.substring(11,19)}}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>

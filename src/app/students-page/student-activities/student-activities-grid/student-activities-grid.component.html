@@ -1,0 +1,58 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Actividades</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Actividades</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-grid>
+
+    <ion-title class="ion-padding" size="large">Actividades asingadas</ion-title>
+
+    <ion-row>
+      <ng-container *ngIf="!activities.length > 0">
+        <mat-card class="example-card form">
+          <mat-card-header>
+            <ion-row class="ion-justify-content-between max-width">
+              <ion-col>
+                <mat-card-title>Evaluaciones pendientes</mat-card-title>
+              </ion-col>
+            </ion-row>
+          </mat-card-header>
+          <mat-card-content>
+
+            <ion-col class="ion-align-self-center">
+              <img class="no-element-img"
+                   src="https://thumbs.dreamstime.com/b/cute-little-kid-girl-think-question-mark-188986232.jpg" alt="">
+              <h3>Parece que aun no hay nada por aqui</h3>
+            </ion-col>
+
+          </mat-card-content>
+        </mat-card>
+      </ng-container>
+      <ion-col size="4" *ngFor="let activity of activities; let i = index">
+        <ion-card (click)="complete(activity.ID_Actividad)">
+          <img class="img"
+               src="https://thumbs.dreamstime.com/b/bombilla-del-rompecabezas-del-trabajo-en-equipo-98181080.jpg"/>
+          <ion-card-header>
+            <ion-card-subtitle>{{activity.Evaluacion}}</ion-card-subtitle>
+            <ion-card-title>{{activity.Descripcion}}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            {{activity.FechaInicio.substring(0, 10)}} {{activity.FechaInicio.substring(11, 19)}}
+            - {{activity.FechaFin.substring(0, 10)}} {{activity.FechaFin.substring(11, 19)}}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>

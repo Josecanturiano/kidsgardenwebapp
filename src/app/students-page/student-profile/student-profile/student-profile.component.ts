@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PersonService} from '../../../shared/services/personas.service';
 import {AlertService} from '../../../shared/services/alert.service';
 import {AuthService} from '../../../login/services/auth-service.service';
+import {StudentsService} from '../../../shared/services/students.service';
 
 @Component({
   selector: 'app-student-profile',
@@ -20,22 +21,21 @@ export class StudentProfileComponent implements OnInit {
   constructor(private personService: PersonService,
               private alertService: AlertService,
               private formBuilder: FormBuilder,
-              private userService: AuthService
+              private userService: AuthService,
+              private studentService: StudentsService
   ) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
 
     this.createForm();
 
-    this.alertService.presentLoading();
+    await this.alertService.presentLoading();
 
-    this.personService.getUser(this.userService.userId)
+    this.studentService.getStudentById(this.userService.userId)
       .subscribe((x: any) => {
         this.student = x.estudiante;
-        this.student.IDs_tutores = x.Tutores[0].ID_Persona || 0;
         this.formGroup.patchValue(this.student);
-        this.formGroup.controls.IDs_tutores.setValue({Nombre: x.Tutores[0].Nombre + ' ' + x.Tutores[0].Apellidos || ''});
         this.alertService.dismissLoading();
       });
 
@@ -52,7 +52,6 @@ export class StudentProfileComponent implements OnInit {
       Direccion: [null, Validators.required],
       Fecha_De_Nacimiento: [null, Validators.required],
       Grado_ID: [null, Validators.required],
-      IDs_tutores: [null, Validators.required],
       Foto: [null, Validators.required],
       foto_raw: [null, Validators.required],
     });

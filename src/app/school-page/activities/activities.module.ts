@@ -12,6 +12,7 @@ import {PrimengModule} from '../../primeng.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TextMaskModule} from 'angular2-text-mask';
 import {ActivitiesFormComponent} from './activities-form/activities-form.component';
+import {ActivityDetailComponent} from './activity-detail/activity-detail.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import {ActivitiesFormComponent} from './activities-form/activities-form.compone
     ActivitiesListComponent,
     ActivitiesFormComponent,
     OrderNumbersComponent,
-    SelectFruitsComponent
+    SelectFruitsComponent,
+    ActivityDetailComponent
   ],
 })
 export class ActivitiesModule { }

@@ -17,7 +17,7 @@
 
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
 
-      <mat-card class="example-card" class="form">
+      <mat-card class="example-card form">
         <mat-card-header>
           <ion-row class="ion-justify-content-between max-width">
             <ion-col>
@@ -30,13 +30,12 @@
         </mat-card-header>
         <mat-card-content>
 
-
           <div>
             <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
               <mat-label>Nombre de la prueba</mat-label>
-              <input matInput placeholder="Nombre de la prueba" formControlName="Nombre">
-              <div *ngIf="submitted && f.Nombre.errors">
-                <mat-error *ngIf="f.Nombre.errors.required">Este campo es obligatorio</mat-error>
+              <input matInput placeholder="Nombre de la prueba" formControlName="Titulo">
+              <div *ngIf="submitted && f.Titulo.errors">
+                <mat-error *ngIf="f.Titulo.errors.required">Este campo es obligatorio</mat-error>
               </div>
             </mat-form-field>
           </div>
@@ -45,25 +44,49 @@
             <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
               <mat-label>Descripción de la prueba</mat-label>
               <textarea matInput placeholder="Descripción de la prueba" formControlName="Descripcion"></textarea>
-              <div *ngIf="submitted && f.Nombre.errors">
+              <div *ngIf="submitted && f.Descripcion.errors">
                 <mat-error *ngIf="f.Descripcion.errors.required">Este campo es obligatorio</mat-error>
               </div>
             </mat-form-field>
           </div>
 
           <mat-form-field appearance="outline" [style.width.%]="100">
+            <mat-label>Competencia</mat-label>
+            <mat-select formControlName="Competencia_ID">
+              <mat-option *ngFor="let compentencia of competencias" [value]="compentencia.Id">
+                {{compentencia.Value}}
+              </mat-option>
+            </mat-select>
+            <div *ngIf="submitted && f.Competencia_ID.errors">
+              <mat-error *ngIf="f.Competencia_ID.errors.required">Este campo es obligatorio</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [style.width.%]="100">
             <mat-label>Sección</mat-label>
-            <mat-select formControlName="Seccion_ID">
+            <mat-select formControlName="seccion_ID">
               <mat-option *ngFor="let section of sections" [value]="section.ID_Seccion">
                 {{section.Nombre}}
               </mat-option>
             </mat-select>
-            <div *ngIf="submitted && f.Seccion_ID.errors">
-              <mat-error *ngIf="f.Seccion_ID.errors.required">Este campo es obligatorio</mat-error>
+            <div *ngIf="submitted && f.seccion_ID.errors">
+              <mat-error *ngIf="f.seccion_ID.errors.required">Este campo es obligatorio</mat-error>
             </div>
           </mat-form-field>
 
           <ion-row>
+
+            <ion-col>
+              <label class="time-label-padding">Objetivos : </label>
+              <p-multiSelect formControlName="objetivos_id" [options]="objetives" placeholder="Objetivos" optionLabel="Value" optionValue="Id">
+                <ng-template let-option pTemplate="item">
+                  <div class="p-multiselect-representative-option">
+                    <span class="p-ml-1">{{option.Value}}</span>
+                  </div>
+                </ng-template>
+              </p-multiSelect>
+            </ion-col>
+
             <ion-col>
               <label class="time-label-padding">Fecha de inicio : </label>
               <p-calendar (ngModelChange)="onStartDateChange($event)" formControlName="FechaInicio" styleClass="p-calendar-class" [showTime]="true"
@@ -79,7 +102,7 @@
             </ion-col>
           </ion-row>
 
-          <mat-card class="example-card" class="form">
+          <mat-card class="example-card form">
             <mat-card-header>
               <ion-row class="ion-justify-content-between max-width">
                 <ion-col>
@@ -102,10 +125,10 @@
 
                     <div [formGroup]="question">
                       <mat-form-field appearance="outline" [style.width.%]="100">
-                        <mat-label>Pregunta numero: {{i + 1}}</mat-label>
+                        <mat-label>Pregunta número: {{i + 1}}</mat-label>
                         <input matInput
                                formControlName="question"
-                               placeholder="Pregunta numero: {{i + 1}}">
+                               placeholder="Pregunta número: {{i + 1}}">
                       </mat-form-field>
 
                       <ion-row>
@@ -146,10 +169,10 @@
                                     </div>
 
                                     <mat-form-field appearance="outline" [style.width.%]="70">
-                                      <mat-label>Respuesta numero: {{i + 1}}</mat-label>
+                                      <mat-label>Respuesta número: {{i + 1}}</mat-label>
                                       <input matInput
                                              formControlName="description"
-                                             placeholder="Respuesta numero: {{i + 1}}">
+                                             placeholder="Respuesta número: {{i + 1}}">
                                     </mat-form-field>
 
                                     <mat-checkbox formControlName="isCorrectAnswer" class="example-margin">Es una

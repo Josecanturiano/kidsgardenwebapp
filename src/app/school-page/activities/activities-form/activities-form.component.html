@@ -64,7 +64,7 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" [style.width.%]="100">
-            <mat-label>Mecanica</mat-label>
+            <mat-label>Mecánica</mat-label>
             <mat-select formControlName="Mecanica_ID">
               <mat-option *ngFor="let Mecanica of mecanicas" [value]="Mecanica.Id">
                 {{Mecanica.Value}}
@@ -87,21 +87,31 @@
             </div>
           </mat-form-field>
 
-          <ion-row>
+<!--          <ion-row>-->
             <ion-col>
-              <label class="time-label-padding">Fecha de inicio : </label>
-              <p-calendar (ngModelChange)="onStartDateChange($event)" formControlName="FechaInicio" styleClass="p-calendar-class" [showTime]="true"
-                          inputId="time" #startDate required="true" showButtonBar="true"
-              ></p-calendar>
+              <label class="time-label-padding">Objetivos : </label>
+              <p-multiSelect formControlName="objetivos_id" [options]="objetives" placeholder="Objetivos" optionLabel="Value" optionValue="Id">
+                <ng-template let-option pTemplate="item">
+                  <div class="p-multiselect-representative-option">
+                    <span class="p-ml-1">{{option.Value}}</span>
+                  </div>
+                </ng-template>
+              </p-multiSelect>
             </ion-col>
-            <ion-col>
-              <label class="time-label-padding">Fecha de fin : </label>
-              <p-calendar formControlName="FechaFin" styleClass="p-calendar-class" [showTime]="true"
-                          inputId="time"
-                          [minDate]="getDateWithFourHour( startDate.value )"
-              ></p-calendar>
-            </ion-col>
-          </ion-row>
+<!--            <ion-col>-->
+<!--              <label class="time-label-padding">Fecha de inicio : </label>-->
+<!--              <p-calendar (ngModelChange)="onStartDateChange($event)" formControlName="FechaInicio" styleClass="p-calendar-class" [showTime]="true"-->
+<!--                          inputId="time" #startDate required="true" showButtonBar="true"-->
+<!--              ></p-calendar>-->
+<!--            </ion-col>-->
+<!--            <ion-col>-->
+<!--              <label class="time-label-padding">Fecha de fin : </label>-->
+<!--              <p-calendar formControlName="FechaFin" styleClass="p-calendar-class" [showTime]="true"-->
+<!--                          inputId="time"-->
+<!--                          [minDate]="getDateWithFourHour( startDate.value )"-->
+<!--              ></p-calendar>-->
+<!--            </ion-col>-->
+<!--          </ion-row>-->
 
           <input #file type="file" hidden #fileUpload type="file" accept="image/*" (click)="fileUpload.value = null"
                  (change)="addNewImg($event.target.files)">

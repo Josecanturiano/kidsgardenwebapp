@@ -10,6 +10,8 @@ import {AlertService} from 'src/app/shared/services/alert.service';
 import {PersonService} from 'src/app/shared/services/personas.service';
 import {StudentsService} from 'src/app/shared/services/students.service';
 import {environment} from 'src/environments/environment';
+import {Location} from '@angular/common';
+
 
 @Component({
   selector: 'app-students-form',
@@ -120,7 +122,6 @@ export class StudentsFormComponent implements OnInit {
 
     delete student.IDs_tutores;
     student.IDs_Tutores = [this.f['IDs_tutores'].value.Id];
-    console.log(student);
 
     delete student.foto_raw;
 

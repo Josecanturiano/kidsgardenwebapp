@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { PrimengModule } from 'src/app/primeng.module';
 import { TextMaskModule } from 'angular2-text-mask';
+import {EvaluationDetailComponent} from './evaluation-detail/evaluation-detail.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { TextMaskModule } from 'angular2-text-mask';
   ],
   declarations: [
     EvaluationsListComponent,
-    EvaluationFormComponent
+    EvaluationFormComponent,
+    EvaluationDetailComponent
   ],
 })
 

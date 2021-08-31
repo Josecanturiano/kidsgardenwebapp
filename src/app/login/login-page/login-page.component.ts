@@ -53,7 +53,7 @@ export class LoginPageComponent implements OnInit {
         break;
 
       default:
-        this.router.navigate(['/school']);
+        this.router.navigate(['/login']);
         break;
     }
   }
@@ -62,7 +62,7 @@ export class LoginPageComponent implements OnInit {
     return this.loginForm.controls;
   }
 
-  onSubmit() {
+  async onSubmit() {
 
     this.submitted = true;
 
@@ -70,7 +70,7 @@ export class LoginPageComponent implements OnInit {
       return;
     }
 
-    this.alertService.presentLoading();
+    await this.alertService.presentLoading();
     this.authService.login(this.f.username.value, this.f.password.value)
       .pipe(first())
       .subscribe(

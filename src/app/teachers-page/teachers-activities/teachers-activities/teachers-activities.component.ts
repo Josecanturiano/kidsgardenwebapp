@@ -31,9 +31,8 @@ export class TeachersActivitiesComponent implements OnInit {
 
   private fillData() {
     this.loading = true;
-    this.activitiesService.getActivitiesBySection().subscribe( x => {
+    this.activitiesService.getActivitiesBySectionForTeacher().subscribe(x => {
       this.loading = false;
-      console.log(x);
       this.activities = x;
     } );
   }

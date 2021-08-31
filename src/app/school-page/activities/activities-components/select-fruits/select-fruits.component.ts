@@ -2,6 +2,9 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 import {Component, OnInit, ViewChild, AfterContentInit} from '@angular/core';
 import {NgxCaptureService} from 'ngx-capture';
 import {tap} from 'rxjs/operators';
+import {VoiceService} from '../../../../shared/services/voice.service';
+import {AlertService} from '../../../../shared/services/alert.service';
+import {AuthService} from '../../../../login/services/auth-service.service';
 
 declare let html2canvas: any;
 
@@ -12,10 +15,12 @@ declare let html2canvas: any;
 })
 export class SelectFruitsComponent implements OnInit {
 
-  constructor(private captureService: NgxCaptureService) {
+  constructor(
+    private voiceService: VoiceService,
+    private alertService: AlertService,
+    private authService: AuthService
+  ) {
   }
-
-  @ViewChild('screen', {static: true}) screen: any;
 
   todo = [
     {
@@ -47,6 +52,11 @@ export class SelectFruitsComponent implements OnInit {
   done = [];
 
   ngOnInit() {
+    this.voiceService.speak( 'Bienvenio, este juego tiene como objetivo separar las frutas de los vegetales, empecemos !' );
+  }
+
+  speak(message) {
+    this.voiceService.speak(message);
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -60,4 +70,21 @@ export class SelectFruitsComponent implements OnInit {
     }
   }
 
+  evaluate() {
+
+    const isCorrectVegetables = this.todo.some( ( fruits ) => fruits.label === 'Pera') && this.todo.some( (fruits) => fruits.label === 'Mango') && this.todo.some( (fruits) =>  fruits.label === 'Fresas' );
+    const isCorrectFruits = this.done.some( ( fruits ) => fruits.label === 'Pimiento') && this.done.some( ( fruits ) => fruits.label === 'Zanahoria' ) && this.done.some( (fruits) => fruits.label === 'Lechuga' );
+
+    if ( isCorrectVegetables && isCorrectFruits ) {
+      this.alertService.success( 'Felicidades, lo haz completado de manera correcta' );
+      this.voiceService.speak( 'Felicidades, lo haz completado de manera correcta' );
+    } else {
+      this.alertService.error( 'Ups, parece que debes practicar un poco mas' );
+      this.voiceService.speak( 'Ups, parece que debes practicar un poco mas' );
+    }
+
+    if ( this.authService.currentUser?.UserInfo?.Rol === 'Estudiante' ) {
+
+    }
+  }
 }

@@ -37,12 +37,12 @@
             {{rowData[col.field]}}
           </td>
           <td>
-            <a [routerLink]="['view', rowData['Id_Usuario'] ]">
+            <a [routerLink]="['view', rowData['ID_Evaluacion'] ]">
               <span slot="start" class="material-icons">portrait</span>
             </a>
-            <!--            <a (click)="openDialog( rowData['Id_Usuario'] )">-->
-            <!--              <span slot="start" class="material-icons cursos-point color-red">delete_outline</span>-->
-            <!--            </a>-->
+            <a (click)="openDialog( rowData['ID_Evaluacion'] )">
+              <span slot="start" class="material-icons cursos-point color-red">delete_outline</span>
+            </a>
           </td>
         </tr>
       </ng-template>

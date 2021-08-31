@@ -1,0 +1,27 @@
+<div >
+
+  <h1>{{header}}</h1>
+  <h3>{{subheader}}</h3>
+  <p-table #dt reorderableColumns="false" selectionMode="multiple" rowHover="true" [columns]="cols" [value]="list" [autoLayout]="true">
+    <ng-template pTemplate="caption">
+      <div class="p-d-flex">
+        <button mat-button type="button" (click)="exportPdf()" class="p-mr-2" pTooltip="CSV" tooltipPosition="bottom"> Exportar a PDF</button>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th [pSortableColumn]="col.field" *ngFor="let col of columns; let i = index">{{col.header}}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns">
+          {{rowData[col.field]}}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+</div>

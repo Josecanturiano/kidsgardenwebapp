@@ -1,0 +1,243 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Modificar evaluación</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Modificar evaluación</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-grid>
+
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+
+      <mat-card class="example-card form">
+        <mat-card-header>
+          <ion-row class="ion-justify-content-between max-width">
+            <ion-col>
+              <mat-card-title>Detalles de la evaluación</mat-card-title>
+            </ion-col>
+            <ion-row>
+              <a (click)="formGroupToggle()" [disabled]="!readonly" class="margin-vertical" mat-raised-button
+                 color="warn">Modificar</a>
+              <a [disabled]="readonly" class="margin-vertical" mat-raised-button color="primary">Guardar</a>
+            </ion-row>
+          </ion-row>
+        </mat-card-header>
+        <mat-card-content>
+
+
+          <div>
+            <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
+              <mat-label>Nombre de la prueba</mat-label>
+              <input matInput placeholder="Nombre de la prueba" formControlName="Nombre">
+              <div *ngIf="submitted && f.Nombre.errors">
+                <mat-error *ngIf="f.Nombre.errors.required">Este campo es obligatorio</mat-error>
+              </div>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
+              <mat-label>Descripción de la prueba</mat-label>
+              <textarea matInput placeholder="Descripción de la prueba" formControlName="Descripcion"></textarea>
+              <div *ngIf="submitted && f.Nombre.errors">
+                <mat-error *ngIf="f.Descripcion.errors.required">Este campo es obligatorio</mat-error>
+              </div>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <mat-label>Competencia</mat-label>
+            <mat-select formControlName="Competencia_ID">
+              <mat-option *ngFor="let compentencia of competencias" [value]="compentencia.Id">
+                {{compentencia.Value}}
+              </mat-option>
+            </mat-select>
+            <div *ngIf="submitted && f.Competencia_ID.errors">
+              <mat-error *ngIf="f.Competencia_ID.errors.required">Este campo es obligatorio</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <mat-label>Sección</mat-label>
+            <mat-select formControlName="Seccion_ID">
+              <mat-option *ngFor="let section of sections" [value]="section.ID_Seccion">
+                {{section.Nombre}}
+              </mat-option>
+            </mat-select>
+            <div *ngIf="submitted && f.Seccion_ID.errors">
+              <mat-error *ngIf="f.Seccion_ID.errors.required">Este campo es obligatorio</mat-error>
+            </div>
+          </mat-form-field>
+
+          <ion-row>
+            <ion-col>
+              <label class="time-label-padding">Fecha de inicio : </label>
+              <p-calendar (ngModelChange)="onStartDateChange($event)" formControlName="FechaInicio" styleClass="p-calendar-class" [showTime]="true"
+                          inputId="time" #startDate
+              ></p-calendar>
+            </ion-col>
+            <ion-col>
+              <label class="time-label-padding">Fecha de fin : </label>
+              <p-calendar formControlName="FechaFin" styleClass="p-calendar-class" [showTime]="true"
+                          inputId="time"
+                          [minDate]="getDateWithFourHour( startDate.value )"
+              ></p-calendar>
+            </ion-col>
+          </ion-row>
+
+          <mat-card class="example-card" class="form">
+            <mat-card-header>
+              <ion-row class="ion-justify-content-between max-width">
+                <ion-col>
+                  <mat-card-title>Preguntas</mat-card-title>
+                </ion-col>
+                <ion-row>
+                  <ion-button [disabled]="readonly" (click)="addNewQuestion()">
+                    <ion-icon slot="start" name="add-outline"></ion-icon>
+                    <mat-label>Agregar nueva pregunta</mat-label>
+                  </ion-button>
+
+                </ion-row>
+              </ion-row>
+            </mat-card-header>
+            <mat-card-content>
+
+              <div formArrayName="questions">
+                <div *ngFor="let question of questions.controls; let i=index">
+                  <div [formGroupName]="i">
+
+                    <div [formGroup]="question">
+                      <mat-form-field appearance="outline" [style.width.%]="100">
+                        <mat-label>Pregunta número: {{i + 1}}</mat-label>
+                        <input matInput
+                               formControlName="question"
+                               placeholder="Pregunta número: {{i + 1}}">
+                      </mat-form-field>
+
+                      <ion-row>
+
+                        <ion-button [disabled]="readonly" (click)="addAnswerForQuestion( i )">
+                          <ion-icon slot="start" name="add-outline"></ion-icon>
+                          <mat-label>Agregar respuesta</mat-label>
+                        </ion-button>
+
+                        <button [disabled]="readonly" mat-icon-button color="warn" (click)="removeQuestion( i )">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+
+                      </ion-row>
+
+                      <div formArrayName="answers">
+                        <ion-row>
+                          <div *ngFor="let answer of getAnswersForQuestion( question ); let index=index">
+                            <div [formGroupName]="index">
+                              <div [formGroup]="answer">
+
+                                <ion-col>
+                                  <div class="answer-card">
+                                    <div [style.width.%]="70">
+                                      <input #file type="file" hidden #fileUpload accept="image/*"
+                                             (click)="fileUpload.value = null"
+                                             (change)="convertFileToBase64($event.target.files, answer)">
+                                      <input type="text" formControllName="img" hidden>
+                                      <ion-row class="ion-justify-content-center">
+                                        <img class="answer-img" [src]="answer.controls.img.value">
+                                      </ion-row>
+                                      <ion-row class="ion-justify-content-center">
+                                        <ion-button [disabled]="readonly" (click)="fileUpload.click()">
+                                          <ion-icon slot="start" name="camera-outline"></ion-icon>
+                                          <mat-label> Seleccione una imagen</mat-label>
+                                        </ion-button>
+                                      </ion-row>
+                                    </div>
+
+                                    <mat-form-field appearance="outline" [style.width.%]="70">
+                                      <mat-label>Respuesta número: {{i + 1}}</mat-label>
+                                      <input matInput
+                                             formControlName="description"
+                                             placeholder="Respuesta número: {{i + 1}}">
+                                    </mat-form-field>
+
+                                    <mat-checkbox formControlName="isCorrectAnswer" class="example-margin">Es una
+                                      respuesta correcta ?
+                                    </mat-checkbox>
+
+                                    <button [disabled]="readonly" mat-icon-button color="warn" (click)="removeAnswerForQuestion(i, index)">
+                                      <mat-icon>delete</mat-icon>
+                                    </button>
+
+                                  </div>
+                                </ion-col>
+
+                              </div>
+                            </div>
+                          </div>
+
+                        </ion-row>
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  <br>
+                  <mat-divider class="divider-padding"></mat-divider>
+                  <br>
+
+                </div>
+
+              </div>
+
+            </mat-card-content>
+          </mat-card>
+
+        </mat-card-content>
+      </mat-card>
+
+    </form>
+
+    <mat-card>
+      <mat-card-header>
+        <ion-row>
+          <mat-card-title>Entregas de la evaluación</mat-card-title>
+        </ion-row>
+      </mat-card-header>
+      <mat-card-content>
+        <p-table rowHover="true" [columns]="cols" [loading]="loading" [value]="evaluations" [paginator]="true" [rows]="6" [showCurrentPageReport]="true"
+                 [rowsPerPageOptions]="[6,15,50]">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th [pSortableColumn]="col.field" *ngFor="let col of columns; let i = index">{{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+              <th>
+                Acciones
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns">
+                {{rowData[col.field]}}
+              </td>
+              <td>
+                <a [routerLink]="['view', rowData['Id_Usuario'] ]">
+                  <span slot="start" class="material-icons">portrait</span>
+                </a>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </mat-card-content>
+    </mat-card>
+
+  </ion-grid>
+</ion-content>

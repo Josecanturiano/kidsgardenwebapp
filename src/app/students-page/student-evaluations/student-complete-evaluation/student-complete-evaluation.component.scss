@@ -1,0 +1,20 @@
+.selectable-option{
+  img{
+    width: 100px;
+    height: 80px;
+  }
+  width: 200px;
+  height: 200px;
+  border: 5px solid;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.padding {
+  padding: 20px 0;
+}

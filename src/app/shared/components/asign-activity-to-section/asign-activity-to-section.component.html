@@ -1,0 +1,35 @@
+<div style="width: 100%; height: 100%">
+  <h1 mat-dialog-title>Agregar estudiante a una sección</h1>
+  <div mat-dialog-content>
+    <div style="display: flex;flex-direction: column; margin:1rem auto; max-width: 600px; padding: 1rem;">
+
+      <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+
+        <ion-grid>
+          <ion-row>
+            <p-calendar placeholder="Fecha de inicio : " class="calendar-index-l"
+                        (ngModelChange)="onStartDateChange($event)" formControlName="FechaInicio"
+                        styleClass="p-calendar-class" [showTime]="true"
+                        inputId="time" #startDate required="true" showButtonBar="true"
+            ></p-calendar>
+
+            <p-calendar placeholder="Fecha de fin : " class="calendar-index-r" formControlName="FechaFin"
+                        styleClass="p-calendar-class" [showTime]="true"
+                        [minDate]="actualDate"
+            ></p-calendar>
+          </ion-row>
+        </ion-grid>
+
+        <br>
+        <br>
+
+
+        <div mat-dialog-actions>
+          <a mat-button (click)="cancelar()">Cancelar</a>
+          <button (click)="onSubmit()" mat-button [disabled]="!getFormIsValid()" [mat-dialog-close]="data">Guardar
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>

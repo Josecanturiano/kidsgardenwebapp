@@ -18,8 +18,6 @@ import {SelectFruitsComponent} from '../../school-page/activities/activities-com
 @NgModule({
   declarations: [
     TeachersActivitiesComponent,
-    ActivitiesListComponent,
-    ActivitiesFormComponent,
     OrderNumbersComponent,
     SelectFruitsComponent
   ],

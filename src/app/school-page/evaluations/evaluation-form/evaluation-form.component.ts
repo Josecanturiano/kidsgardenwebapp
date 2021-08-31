@@ -5,6 +5,8 @@ import {SectionsService} from 'src/app/shared/services/sections.service';
 import {SchoolService} from '../../../shared/services/school.service';
 import {ActivitiesService} from '../../../shared/services/activities.service';
 import {Router} from '@angular/router';
+import {Location} from '@angular/common';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-evaluation-form',
@@ -14,9 +16,11 @@ import {Router} from '@angular/router';
 export class EvaluationFormComponent implements OnInit {
 
   formGroup: FormGroup;
-  sections: any;
+  sections: any[];
   answerImgTemplate = 'https://www.clipartmax.com/png/full/122-1223950_bulb-idea-light-bulb-question-mark-thinking-icon-light-bulb-question-mark.png';
   submitted: boolean;
+  competencias: any;
+  objetives: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -24,25 +28,36 @@ export class EvaluationFormComponent implements OnInit {
     private alertService: AlertService,
     private schoolService: SchoolService,
     private route: Router,
-    private activitiesService: ActivitiesService
+    private activitiesService: ActivitiesService,
+    private location: Location
   ) {
   }
 
   ngOnInit() {
     this.createForm();
 
-    this.sectionsService.getSections().subscribe(sections => {
+    this.sectionsService.getSections().subscribe((sections: any[]) => {
       this.sections = sections;
+    });
+
+    this.schoolService.getCompetencies().subscribe(x => {
+      this.competencias = x;
+    });
+
+    this.schoolService.getObjetives().subscribe((x: any) => {
+      this.objetives = x;
     });
   }
 
   createForm() {
     this.formGroup = this.formBuilder.group({
-      Nombre: [null, Validators.required],
+      Titulo: [null, Validators.required],
       Descripcion: [null, Validators.required],
-      Seccion_ID: [null, Validators.required],
+      Competencia_ID: [null, Validators.required],
+      seccion_ID: [null, Validators.required],
       FechaInicio: [null, Validators.required],
       FechaFin: [null, Validators.required],
+      objetivos_id: [null, Validators.required],
       questions: this.formBuilder.array([], Validators.required),
     });
   }
@@ -53,7 +68,6 @@ export class EvaluationFormComponent implements OnInit {
     const reader = new FileReader();
     reader.onloadend = () => {
       group.controls.img.setValue(reader.result);
-      // this.answerImgTemplate = reader.result.toString();
     };
     reader.readAsDataURL(file);
   }
@@ -103,9 +117,10 @@ export class EvaluationFormComponent implements OnInit {
 
   getAnswerForQuestion() {
     return this.formBuilder.group({
-      description: ['', Validators.required],
+      description: '',
       isCorrectAnswer: false,
-      img: this.answerImgTemplate
+      img: this.answerImgTemplate,
+      selected: false
     });
   }
 
@@ -117,11 +132,15 @@ export class EvaluationFormComponent implements OnInit {
     } else {
 
       const evaluation = this.formGroup.value;
-      evaluation.Estado = 1;
-      evaluation.ContenidoJSON = JSON.stringify(evaluation.questions);
 
-      delete evaluation.answers;
-      delete evaluation.questions;
+      evaluation.Mecanica_ID = 0;
+      evaluation.Grado_ID = this.sections.find(x => x.ID_Seccion === evaluation.seccion_ID).ID_Grado;
+      evaluation.Contenido_Json = JSON.stringify(evaluation.questions);
+
+      console.log(evaluation);
+
+      // delete evaluation.answers;
+      // delete evaluation.questions;
 
       this.alertService.presentLoading();
       this.activitiesService.createEvaluation(evaluation).subscribe(
@@ -129,7 +148,7 @@ export class EvaluationFormComponent implements OnInit {
           console.log(data);
           this.alertService.dismissLoading();
           this.alertService.success('La evaluación se creo de manera correcta !');
-          this.route.navigate(['school/evaluations']);
+          this.location.back();
         },
         (error) => {
           console.log(error);
@@ -145,7 +164,11 @@ export class EvaluationFormComponent implements OnInit {
     }
     const date = new Date(value.getTime());
     date.setHours(date.getHours() + 4);
-    return date;
+    if (date.getTime() > new Date().getTime()) {
+      return date;
+    } else {
+      return new Date();
+    }
   }
 
   haveMoreThanOneValidAnswer(): ValidatorFn {
@@ -163,5 +186,9 @@ export class EvaluationFormComponent implements OnInit {
     if (this.f.FechaInicio.value.getTime() >= this.f.FechaFin.value.getTime()) {
       this.f.FechaFin.setValue(this.getDateWithFourHour(this.f.FechaInicio.value));
     }
+  }
+
+  getMinDate() {
+
   }
 }

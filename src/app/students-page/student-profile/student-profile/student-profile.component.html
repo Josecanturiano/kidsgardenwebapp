@@ -24,63 +24,65 @@
           </ion-row>
         </mat-card-header>
 
+        <form [formGroup]="formGroup">
+          <mat-card-content>
+            <div [style.width.%]="100">
+              <ion-row class="ion-justify-content-center">
+                <img [src]="student.Foto">
+              </ion-row>
+            </div>
 
-        <mat-card-content>
-          <div [style.width.%]="100">
-            <ion-row class="ion-justify-content-center">
-              <img [src]="student.Foto">
-            </ion-row>
-          </div>
+            <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
+              <mat-label>Usuario</mat-label>
+              <input [readonly]="true" matInput placeholder="Usuario" formControlName="CodigoUsuario">
+            </mat-form-field>
 
-          <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
-            <mat-label>Usuario</mat-label>
-            <input [readonly]="true" matInput placeholder="Usuario" formControlName="CodigoUsuario">
-          </mat-form-field>
+            <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
+              <mat-label>Nombre</mat-label>
+              <input [readonly]="true" matInput placeholder="Nombre" formControlName="Nombre">
+            </mat-form-field>
 
-          <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
-            <mat-label>Nombre</mat-label>
-            <input [readonly]="true" matInput placeholder="Nombre" formControlName="Nombre">
-          </mat-form-field>
+            <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
+              <mat-label>Apellido</mat-label>
+              <input [readonly]="true" matInput placeholder="Apellido" formControlName="Apellidos">
+            </mat-form-field>
 
-          <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
-            <mat-label>Apellido</mat-label>
-            <input [readonly]="true" matInput placeholder="Apellido" formControlName="Apellidos">
-          </mat-form-field>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-label>Fecha de nacimiento</mat-label>
+              <input matInput formControlName="Fecha_De_Nacimiento" readonly="true">
+            </mat-form-field>
 
-          <mat-form-field appearance="outline" [style.width.%]="100">
-            <mat-label>Fecha de nacimiento</mat-label>
-            <input matInput formControlName="Fecha_De_Nacimiento" readonly="true">
-          </mat-form-field>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-label>Genero</mat-label>
+              <mat-select formControlName="Genero_ID" [disabled]="true">
+                <mat-option *ngFor="let gender of genders" [value]="gender.value">
+                  {{gender.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
 
-          <mat-form-field appearance="outline" [style.width.%]="100">
-            <mat-label>Genero</mat-label>
-            <mat-select formControlName="Genero_ID" [disabled]="true">
-              <mat-option *ngFor="let gender of genders" [value]="gender.value">
-                {{gender.viewValue}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+            <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
+              <mat-label>Telefono</mat-label>
+              <input [readonly]="true" matInput placeholder="Telefono" formControlName="Telefono">
+            </mat-form-field>
 
-          <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
-            <mat-label>Telefono</mat-label>
-            <input [readonly]="true" matInput placeholder="Telefono" formControlName="Telefono">
-          </mat-form-field>
+            <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
+              <mat-label>Direccion</mat-label>
+              <input [readonly]="true" matInput placeholder="Direccion" formControlName="Direccion">
+            </mat-form-field>
 
-          <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
-            <mat-label>Direccion</mat-label>
-            <input [readonly]="true" matInput placeholder="Direccion" formControlName="Direccion">
-          </mat-form-field>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-label>Grado</mat-label>
+              <mat-select formControlName="Grado_ID" [disabled]="true">
+                <mat-option *ngFor="let grade of grades" [value]="grade.value">
+                  {{grade.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
 
-          <mat-form-field appearance="outline" [style.width.%]="100">
-            <mat-label>Grado</mat-label>
-            <mat-select formControlName="Grado_ID" [disabled]="true">
-              <mat-option *ngFor="let grade of grades" [value]="grade.value">
-                {{grade.viewValue}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          </mat-card-content>
+        </form>
 
-        </mat-card-content>
       </mat-card>
     </ion-row>
   </ion-grid>

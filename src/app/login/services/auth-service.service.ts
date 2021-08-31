@@ -19,17 +19,17 @@ export class AuthService {
       Usuario: username,
       Password: password
     }).pipe(map(user => {
+      console.log(user);
       localStorage.setItem('currentUser', JSON.stringify(user));
       return user;
     }));
   }
 
   logout() {
-    localStorage.removeItem('currentUser');
+    localStorage.clear();
   }
 
   createSchool(school) {
-    console.log(school);
     return this.http.post(`${environment.API_URL}/session/RegistroInstitucion`, {...school});
   }
 
@@ -37,8 +37,16 @@ export class AuthService {
     return JSON.parse(localStorage.getItem('currentUser'));
   }
 
+  public get isTeacher() {
+    return this.currentUser?.UserInfo?.Rol === 'Docente';
+  }
+
   public get currentTeacher() {
     return JSON.parse(localStorage.getItem('currentTeacher'));
+  }
+
+  public get currentStudent() {
+    return JSON.parse(localStorage.getItem('currentStudent'));
   }
 
   public get institutionId() {

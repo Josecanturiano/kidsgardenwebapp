@@ -6,6 +6,7 @@ import {SchoolService} from '../../../shared/services/school.service';
 import {AlertService} from '../../../shared/services/alert.service';
 import {ActivitiesService} from '../../../shared/services/activities.service';
 import {Router} from '@angular/router';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-activities-form',
@@ -20,6 +21,7 @@ export class ActivitiesFormComponent implements OnInit {
   mecanicas: any;
   grades = environment.grades;
   imgs = [];
+  objetives: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,7 +29,8 @@ export class ActivitiesFormComponent implements OnInit {
     private schoolService: SchoolService,
     private alertService: AlertService,
     private activitiesService: ActivitiesService,
-    private route: Router
+    private route: Router,
+    private location: Location,
   ) {
   }
 
@@ -41,6 +44,10 @@ export class ActivitiesFormComponent implements OnInit {
     this.schoolService.getMecanicas().subscribe(x => {
       this.mecanicas = x;
     });
+
+    this.schoolService.getObjetives().subscribe((x: any) => {
+      this.objetives = x;
+    });
   }
 
   private createForm() {
@@ -50,12 +57,11 @@ export class ActivitiesFormComponent implements OnInit {
       Grado_ID: [null, Validators.required],
       Competencia_ID: [null, Validators.required],
       Mecanica_ID: [null, Validators.required],
-      FechaInicio: [null, Validators.required],
-      FechaFin: [null, Validators.required]
+      objetivos_id: [null, Validators.required]
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     this.submitted = true;
 
     if (this.formGroup.status !== 'VALID') {
@@ -65,7 +71,7 @@ export class ActivitiesFormComponent implements OnInit {
       activity.Estado = 1;
       activity.Contenido_Json = JSON.stringify(this.imgs);
 
-      this.alertService.presentLoading();
+      await this.alertService.presentLoading();
       this.activitiesService.createActivity(activity).subscribe(
         (data) => {
           this.alertService.dismissLoading();

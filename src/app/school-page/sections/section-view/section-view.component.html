@@ -21,14 +21,23 @@
         </ion-row>
         <br>
         <ion-row>
+          <button (click)="changeTeacher()" mat-icon-button color="warn">
+            <mat-icon>edit</mat-icon>
+          </button>
           <button mat-button disabled>Mestro :</button>
           <button (click)="goToTeacherView()" class="margin-vertical" mat-button
                   color="primary">{{ teacher?.Nombre + ' ' + teacher?.Apellidos }}</button>
         </ion-row>
         <ion-row>
+          <button (click)="changeAssistant()" mat-icon-button color="warn">
+            <mat-icon>edit</mat-icon>
+          </button>
           <button mat-button disabled>Asistente :</button>
           <button (click)="goToAsistantView()" class="margin-vertical" mat-button
                   color="primary">{{ asistant?.Nombre + ' ' + asistant?.Apellidos }}</button>
+        </ion-row>
+        <ion-row>
+          <ion-button color="success" (click)="generateReport()">Generar reporte</ion-button>
         </ion-row>
         <br>
         <ion-row>

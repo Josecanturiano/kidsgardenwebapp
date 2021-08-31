@@ -8,6 +8,10 @@ import {PersonService} from 'src/app/shared/services/personas.service';
 import {SectionsService} from 'src/app/shared/services/sections.service';
 import {StudentsService} from 'src/app/shared/services/students.service';
 import {environment} from 'src/environments/environment';
+import {ActivitiesService} from '../../../shared/services/activities.service';
+import {Location} from '@angular/common';
+import {MatDialog} from '@angular/material/dialog';
+import {ReportBySectionComponent} from '../../../shared/components/report-by-section/report-by-section.component';
 
 @Component({
   selector: 'app-student-view',
@@ -15,7 +19,8 @@ import {environment} from 'src/environments/environment';
   styleUrls: ['./student-view.component.scss'],
 })
 export class StudentViewComponent implements OnInit {
-
+  activitiesResultCols;
+  evaluationsResultCols;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -25,7 +30,10 @@ export class StudentViewComponent implements OnInit {
     private route: Router,
     private alertService: AlertService,
     private activedRouter: ActivatedRoute,
-    private studentService: StudentsService
+    private studentService: StudentsService,
+    public authService: AuthService,
+    private location: Location,
+    private dialog: MatDialog
   ) {
   }
 
@@ -47,12 +55,17 @@ export class StudentViewComponent implements OnInit {
   maxDateAccepted = new Date(this.date.getFullYear() - 6, this.date.getMonth(), this.date.getDay());
 
   results: any;
+  activitiesResults: any;
+  evaluationsResults: any;
 
   async ngOnInit() {
 
     this.createForm();
 
     await this.alertService.presentLoading();
+
+    this.getActivitiesResults();
+    this.getEvaluationsResults();
 
     if (this.activedRouter.snapshot.paramMap.get('id')) {
 
@@ -151,7 +164,7 @@ export class StudentViewComponent implements OnInit {
     this.students.update(student)
       .subscribe(
         data => {
-          this.route.navigate(['school/students']);
+          this.location.back();
           this.alertService.success('Modificación completa');
           this.alertService.dismissLoading();
         },
@@ -165,5 +178,83 @@ export class StudentViewComponent implements OnInit {
 
   goToSectionView() {
     this.route.navigate([`school/sections/view/${this.student['Seccion_ID']}`]);
+  }
+
+  private getActivitiesResults() {
+
+    this.activitiesResultCols = [
+      {field: 'Nombre', header: 'Nombre'},
+      {field: 'FechaEntrega', header: 'Fecha de entrega'},
+      {field: 'Calificacion', header: 'Calificacion'},
+    ];
+
+    // this.activitiesService.getEvaluationResultsByStudents().suscribe( result => {
+    //   this.evaluationResults = result;
+    // } );
+  }
+
+  private getEvaluationsResults() {
+
+    this.evaluationsResultCols = [
+      {field: 'Nombre', header: 'Nombre'},
+      {field: 'FechaEntrega', header: 'Fecha de entrega'},
+      {field: 'Calificacion', header: 'Calificacion'},
+    ];
+
+    // this.activitiesService.getActivitiesResultsByStudents().suscribe( result => {
+    //   this.activitiesResults = result;
+    // } );
+  }
+
+  generateActivityReport() {
+    this.dialog.open( ReportBySectionComponent, {
+      maxHeight: '90vh',
+      minWidth: '100vw',
+      data: {
+        type: 'ReportByStudent',
+        studentName: this.student.Nombre + ' ' + this.student.Apellidos,
+        list: [
+          {actividad: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Expresa sus sentimientos e ideas de forma gráfica o escrita, de manera no convencional. \n Identifica algunos medios de transporte de la comunidad local y nacional. \n Identifica la bandera del país cuando la ven. \n', comentarios: 'Comentarios', logrado: 'Si'},
+          {actividad: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {actividad: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {actividad: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {actividad: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {actividad: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {actividad: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {actividad: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {actividad: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {actividad: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {actividad: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {actividad: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {actividad: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+        ]
+      },
+    });
+  }
+
+  generateEvaluationReport() {
+    this.dialog.open( ReportBySectionComponent, {
+      maxHeight: '90vh',
+      minWidth: '100vw',
+      data: {
+        type: 'ReportByStudentEvaluation',
+        studentName: this.student.Nombre + ' ' + this.student.Apellidos,
+        list: [
+          {evaluacion: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Expresa sus sentimientos e ideas de forma gráfica o escrita, de manera no convencional. \n Identifica algunos medios de transporte de la comunidad local y nacional. \n Identifica la bandera del país cuando la ven. \n', comentarios: 'Comentarios', logrado: 'Si'},
+          {evaluacion: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {evaluacion: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {evaluacion: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {evaluacion: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {evaluacion: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {evaluacion: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {evaluacion: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {evaluacion: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {evaluacion: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {evaluacion: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {evaluacion: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+          {evaluacion: 'actividad 1', mecanica: 'Mecanica', competencia: 'Competencias', objetivos: 'Objetivos', comentarios: 'Comentarios', logrado: 'Si'},
+        ]
+      },
+    });
   }
 }

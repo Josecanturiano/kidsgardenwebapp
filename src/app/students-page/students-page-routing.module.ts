@@ -17,9 +17,21 @@ const routes: Routes = [
         loadChildren: () => import('./student-profile/student-profile.module').then( m => m.StudentProfileModule),
       },
       {
+        path: 'games',
+        loadChildren: () => import('./student-game/student-game.module').then( m => m.StudentGameModule),
+      },
+      {
+        path: 'activities',
+        loadChildren: () => import('./student-activities/student-activities.module').then( m => m.StudentActivitiesModule),
+      },
+      {
+        path: 'evaluations',
+        loadChildren: () => import('./student-evaluations/student-evaluations.module').then( m => m.StudentEvaluationsModule),
+      },
+      {
         path: '',
         redirectTo: 'home',
-        pathMatch: "full"
+        pathMatch: 'full'
       }
     ]
   }

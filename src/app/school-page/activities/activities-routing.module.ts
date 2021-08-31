@@ -4,6 +4,7 @@ import { OrderNumbersComponent } from './activities-components/order-numbers/ord
 import { SelectFruitsComponent } from './activities-components/select-fruits/select-fruits.component';
 import { ActivitiesListComponent } from './activities-list/activities-list.component';
 import {ActivitiesFormComponent} from './activities-form/activities-form.component';
+import {ActivityDetailComponent} from './activity-detail/activity-detail.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'add',
     component: ActivitiesFormComponent
+  },
+  {
+    path: 'view/:id',
+    component: ActivityDetailComponent
   }
 ];
 

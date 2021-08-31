@@ -61,11 +61,11 @@ export class SectionsFormComponent implements OnInit {
     }
 
     private _filter(value: string) {
-      return this.personService.getTeachersByFullName( value ).pipe();
+      return this.personService.getTeachersByFullName( value, '0' ).pipe();
     }
 
     private _filter2(value: string) {
-      return this.personService.getAssistantsByFullName( value ).pipe();
+      return this.personService.getAssistantsByFullName( value, '0' ).pipe();
     }
 
     onSubmit(){

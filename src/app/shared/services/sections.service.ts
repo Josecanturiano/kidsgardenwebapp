@@ -74,10 +74,10 @@ export class SectionsService {
     return this.http.post(`${environment.API_URL}/institucion/QuitarSuspencion`, model );
   }
 
-  createSection( section ){
+  createSection( section ) {
     section.Institucion_ID = this.user.institutionId;
     section.Creador = this.user.userId;
-    return this.http.post(`${environment.API_URL}/institucion/CreateSeccion`, section );
+    return this.http.post(`${environment.API_URL}/institucion/CreateSeccion`, section);
   }
 
   addStudentToSection( studentId, sectionId ){

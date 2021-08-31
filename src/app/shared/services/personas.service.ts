@@ -25,12 +25,12 @@ export class PersonService {
     return this.http.get(`${environment.API_URL}/institucion/GetDocentesAll?Institucion_ID=` + this.auth.institutionId);
   }
 
-  getTeachersByFullName(fullName): Observable<any> {
-    return this.http.get(`${environment.API_URL}/institucion/getDocentesByQueryAndFilters?Q=${fullName}&Institucion_ID=` + this.auth.institutionId);
+  getTeachersByFullName(fullName, idSection = ''): Observable<any> {
+    return this.http.get(`${environment.API_URL}/institucion/getDocentesByQueryAndFilters?Q=${fullName}&Institucion_ID=` + this.auth.institutionId + `&Seccion_ID=` + idSection);
   }
 
-  getAssistantsByFullName(fullName): Observable<any> {
-    return this.http.get(`${environment.API_URL}/institucion/getAsistentesByQueryAndFilters?Q=${fullName}&Institucion_ID=` + this.auth.institutionId);
+  getAssistantsByFullName(fullName, idSection = ''): Observable<any> {
+    return this.http.get(`${environment.API_URL}/institucion/getAsistentesByQueryAndFilters?Q=${fullName}&Institucion_ID=` + this.auth.institutionId + `&Seccion_ID=` + idSection);
   }
 
   createTeacher(teacher: any) {

@@ -6,7 +6,7 @@
       <ion-title>Usuarios</ion-title>
     </ion-toolbar>
   </ion-header>
-  
+
   <ion-content>
     <ion-header collapse="condense">
       <ion-toolbar>
@@ -16,10 +16,10 @@
     <ion-grid>
       <ion-row class="ion-padding">
         <ion-button [routerLink]="['add']">Agregar usuario</ion-button>
-      </ion-row> 
+      </ion-row>
       <ion-row class="ion-padding">
-       
-        <p-table rowHover="true" [columns]="cols" [loading]="loading" [value]="teachers" [paginator]="true" [rows]="6" [showCurrentPageReport]="true" 
+
+        <p-table rowHover="true" [columns]="cols" [loading]="loading" [value]="teachers" [paginator]="true" [rows]="6" [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[6,15,50]">
             <ng-template pTemplate="header" let-columns>
                 <tr>
@@ -27,7 +27,7 @@
                       <p-sortIcon [field]="col.field"></p-sortIcon>
                     </th>
                     <th>
-                      Acciones                     
+                      Acciones
                     </th>
                 </tr>
             </ng-template>
@@ -38,16 +38,12 @@
                     </td>
                     <td>
                       <a [routerLink]="['view', rowData['Id_Usuario'] ]">
-                        <span slot="start" class="material-icons">portrait</span>                    
+                        <span slot="start" class="material-icons">portrait</span>
                       </a>
-                      <a (click)="openDialog( rowData['Id_Usuario'] )">
-                        <span slot="start" class="material-icons cursos-point color-red">delete_outline</span>
-                      </a>
-                    </td>                    
+                    </td>
                 </tr>
             </ng-template>
         </p-table>
-      </ion-row> 
+      </ion-row>
     </ion-grid>
   </ion-content>
-  

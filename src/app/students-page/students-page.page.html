@@ -5,9 +5,12 @@
         <ion-list id="inbox-list">
           <ion-list-header>{{currentUser.username}}</ion-list-header>
           <ion-note>{{currentUser.name + ' ' + currentUser.lastname}}</ion-note>
-
+          <ion-note>
+<!--            -->
+          </ion-note>
           <ion-menu-toggle auto-hide="false">
-            <ion-item *ngFor="let p of appPages; let i = index" (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
+            <ion-item *ngFor="let p of appPages; let i = index" (click)="selectedIndex = i" routerDirection="root"
+                      [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
               <span slot="start" class="material-icons">{{p.icon}}</span>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>

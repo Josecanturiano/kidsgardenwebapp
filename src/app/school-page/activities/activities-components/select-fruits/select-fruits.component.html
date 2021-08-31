@@ -13,7 +13,7 @@
       <ion-title size="large">Actividades</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-grid>    
+  <ion-grid>
     <ion-row>
 
       <mat-card class="example-card" class="form">
@@ -21,19 +21,19 @@
           <ion-row class="ion-justify-content-between max-width">
             <ion-col>
                 <mat-card-title>Selecciona los vegetales</mat-card-title>
-            </ion-col>    
+            </ion-col>
             <ion-row>
-              <button (click)="capture()" class="margin-vertical" mat-raised-button color="primary">Completar</button>
-            </ion-row>             
-          </ion-row>              
+              <button (click)="evaluate()" class="margin-vertical" mat-raised-button color="primary">Completar</button>
+            </ion-row>
+          </ion-row>
         </mat-card-header>
 
-        <mat-card-content>  
-        
+        <mat-card-content>
+
             <div id="capture">
               <div class="example-container">
                 <h2>Frutas</h2>
-              
+
                 <div
                   cdkDropList
                   #todoList="cdkDropList"
@@ -43,16 +43,16 @@
                   (cdkDropListDropped)="drop($event)">
                   <div class="example-box" *ngFor="let item of todo" cdkDrag>
                     <ion-col class="ion-align-self-center">
-                      <img class="img" [src]="item.img" alt="">
+                      <img class="img" (mousedown)="speak(item.label)" [src]="item.img" alt="">
                       <label>{{item.label}}</label>
-                    </ion-col>                  
+                    </ion-col>
                   </div>
                 </div>
               </div>
-              
+
               <div class="example-container">
                 <h2>Vegetales</h2>
-              
+
                 <div
                   cdkDropList
                   #doneList="cdkDropList"
@@ -64,7 +64,7 @@
                     <ion-col class="ion-align-self-center">
                       <img class="img" [src]="item.img" alt="">
                       <label>{{item.label}}</label>
-                    </ion-col>   
+                    </ion-col>
                   </div>
                 </div>
               </div>
@@ -72,6 +72,6 @@
 
         </mat-card-content>
       </mat-card>
-    </ion-row>      
+    </ion-row>
   </ion-grid>
 </ion-content>

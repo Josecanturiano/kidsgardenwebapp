@@ -13,7 +13,170 @@
       <ion-title size="large">Actividades</ion-title>
     </ion-toolbar>
   </ion-header>
-  
-  <router-outlet></router-outlet>
+
+  <ion-grid>
+
+
+    <p-table>
+
+    </p-table>
+
+    <mat-card class="example-card form">
+
+      <mat-card-header>
+        <ion-row class="ion-justify-content-between max-width">
+          <ion-col>
+            <mat-card-title>Detalles de la actividad</mat-card-title>
+          </ion-col>
+          <ion-row>
+            <a (click)="formGroupToggle()" [disabled]="!readonly" class="margin-vertical" mat-raised-button
+               color="warn">Modificar</a>
+            <a [disabled]="readonly" (click)="onSubmit()" class="margin-vertical" mat-raised-button color="primary">Guardar</a>
+          </ion-row>
+        </ion-row>
+      </mat-card-header>
+      <mat-card-content>
+
+        <form [formGroup]="formGroup">
+
+          <div>
+            <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
+              <mat-label>Nombre de la actividad</mat-label>
+              <input matInput placeholder="Nombre de la actividad" formControlName="Titulo">
+              <div *ngIf="submitted && f.Titulo.errors">
+                <mat-error *ngIf="f.Titulo.errors.required">Este campo es obligatorio</mat-error>
+              </div>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <mat-form-field color="primary" [style.width.%]="100" appearance="outline">
+              <mat-label>Descripción de la actividad</mat-label>
+              <textarea matInput placeholder="Descripción de la actividad" formControlName="Descripcion"></textarea>
+              <div *ngIf="submitted && f.Descripcion.errors">
+                <mat-error *ngIf="f.Descripcion.errors.required">Este campo es obligatorio</mat-error>
+              </div>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <mat-label>Competencia</mat-label>
+            <mat-select formControlName="Competencia_ID">
+              <mat-option *ngFor="let compentencia of competencias" [value]="compentencia.Id">
+                {{compentencia.Value}}
+              </mat-option>
+            </mat-select>
+            <div *ngIf="submitted && f.Competencia_ID.errors">
+              <mat-error *ngIf="f.Competencia_ID.errors.required">Este campo es obligatorio</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <mat-label>Mecánica</mat-label>
+            <mat-select formControlName="Mecanica_ID">
+              <mat-option *ngFor="let Mecanica of mecanicas" [value]="Mecanica.Id">
+                {{Mecanica.Value}}
+              </mat-option>
+            </mat-select>
+            <div *ngIf="submitted && f.Mecanica_ID.errors">
+              <mat-error *ngIf="f.Mecanica_ID.errors.required">Este campo es obligatorio</mat-error>
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <mat-label>Grado</mat-label>
+            <mat-select formControlName="Grado_ID">
+              <mat-option *ngFor="let grade of grades" [value]="grade.value">
+                {{grade.viewValue}}
+              </mat-option>
+            </mat-select>
+            <div *ngIf="submitted && f.Grado_ID.errors">
+              <mat-error *ngIf="f.Grado_ID.errors.required">Este campo es obligatorio</mat-error>
+            </div>
+          </mat-form-field>
+
+          <ion-col>
+            <label class="time-label-padding">Objetivos : </label>
+            <p-multiSelect formControlName="objetivos_id" [options]="objetives" placeholder="Objetivos"
+                           optionLabel="Value" optionValue="Id">
+              <ng-template let-option pTemplate="item">
+                <div class="p-multiselect-representative-option">
+                  <span class="p-ml-1">{{option.Value}}</span>
+                </div>
+              </ng-template>
+            </p-multiSelect>
+          </ion-col>
+
+          <input #file hidden #fileUpload type="file" accept="image/*" (click)="fileUpload.value = null"
+                 (change)="addNewImg($event.target.files)">
+
+          <ion-row class="padding-20px">
+            <ion-button [disabled]="readonly" (click)="fileUpload.click()">
+              <ion-icon slot="start" name="camera-outline"></ion-icon>
+              <mat-label> Agregue algunas imagenes</mat-label>
+            </ion-button>
+          </ion-row>
+
+          <label class="time-label-padding padding-20px" *ngIf="imgs.length > 0"> Imagenes </label>
+
+          <ion-row class="padding-20px">
+            <div *ngFor="let img of imgs; let i = index">
+              <ion-row>
+                <ion-col>
+                  <ion-row>
+                    <img [src]="img" class="loadable-imgs" alt=""/>
+                  </ion-row>
+                  <ion-row>
+                    <button mat-button color="warn" (click)="removeImg( i )">
+                      remover imagen
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+            </div>
+          </ion-row>
+        </form>
+
+        <h2 style="padding: 20px">Secciones asignadas</h2>
+
+        <button mat-button color="primary" [hidden]="!authService.isTeacher" (click)="asingActivityToSection()"> Asignar a una sección</button>
+
+        <p-table rowHover="true" [columns]="cols" [value]="sections" [paginator]="true" [rows]="6"
+                 [showCurrentPageReport]="true"
+                 [rowsPerPageOptions]="[6,15,50]">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th [pSortableColumn]="col.field" *ngFor="let col of columns; let i = index">{{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+              <th>
+                Acciones
+              </th>
+            </tr>
+<!--          </ng-template>-->
+<!--          <ng-template pTemplate="body" let-rowData let-columns="columns">-->
+<!--            <tr>-->
+<!--              <td *ngFor="let col of columns">-->
+<!--                {{rowData[col.field]}}-->
+<!--              </td>-->
+<!--              <td>-->
+<!--                <a [routerLink]="['view', rowData['ID_Actividad'] ]">-->
+<!--                  <span slot="start" class="material-icons">portrait</span>-->
+<!--                </a>-->
+<!--                <a (click)="openDialog( rowData['ID_Actividad'] )">-->
+<!--                  <span slot="start" class="material-icons cursos-point color-red">delete_outline</span>-->
+<!--                </a>-->
+<!--              </td>-->
+<!--            </tr>-->
+          </ng-template>
+
+        </p-table>
+
+      </mat-card-content>
+
+    </mat-card>
+
+  </ion-grid>
 
 </ion-content>
